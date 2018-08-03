@@ -57,6 +57,27 @@ void PlateRecognition::removeRivet (Mat& img){
     }
 }
 
+string PlateRecognition::carType(Mat result){
+    cvtColor(result, result, COLOR_BGR2GRAY);
+
+    threshold(result, result, 120, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+
+    //如果二值化图颜色颠倒，则反色
+    int sum = 0;
+    for (int i = 0; i < result.rows; i++)
+    {
+        for(int j = 0; j < result.cols; j++){
+            sum += result.at<uchar>(i, j) / 255;
+        }
+    }
+
+    if (sum > 0.5 * result.rows * result.cols){
+        return "yellow";
+    }else{
+        return "blue";
+    }
+}
+
 Mat PlateRecognition::process(Mat result){
 
     cvtColor(result, result, COLOR_BGR2GRAY);

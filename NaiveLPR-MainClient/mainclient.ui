@@ -230,9 +230,9 @@ QPushButton:hover{
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>145</y>
+        <y>130</y>
         <width>200</width>
-        <height>240</height>
+        <height>250</height>
        </rect>
       </property>
       <property name="font">
@@ -259,13 +259,13 @@ background: rgb(248, 248, 248);
 }</string>
       </property>
       <property name="title">
-       <string>  Profile  </string>
+       <string/>
       </property>
       <widget class="QLabel" name="label_3">
        <property name="geometry">
         <rect>
          <x>54</x>
-         <y>38</y>
+         <y>36</y>
          <width>61</width>
          <height>20</height>
         </rect>
@@ -298,7 +298,7 @@ background: none;
        <property name="geometry">
         <rect>
          <x>110</x>
-         <y>38</y>
+         <y>36</y>
          <width>91</width>
          <height>20</height>
         </rect>
@@ -331,7 +331,7 @@ background: none;
        <property name="geometry">
         <rect>
          <x>54</x>
-         <y>72</y>
+         <y>70</y>
          <width>61</width>
          <height>20</height>
         </rect>
@@ -364,7 +364,7 @@ background: none;
        <property name="geometry">
         <rect>
          <x>110</x>
-         <y>72</y>
+         <y>70</y>
          <width>91</width>
          <height>20</height>
         </rect>
@@ -397,7 +397,7 @@ background: none;
        <property name="geometry">
         <rect>
          <x>25</x>
-         <y>40</y>
+         <y>38</y>
          <width>18</width>
          <height>16</height>
         </rect>
@@ -423,7 +423,7 @@ background: none;
        <property name="geometry">
         <rect>
          <x>25</x>
-         <y>74</y>
+         <y>72</y>
          <width>18</width>
          <height>16</height>
         </rect>
@@ -449,7 +449,7 @@ background: none;
        <property name="geometry">
         <rect>
          <x>25</x>
-         <y>107</y>
+         <y>105</y>
          <width>18</width>
          <height>16</height>
         </rect>
@@ -475,7 +475,7 @@ background: none;
        <property name="geometry">
         <rect>
          <x>54</x>
-         <y>105</y>
+         <y>103</y>
          <width>61</width>
          <height>20</height>
         </rect>
@@ -508,7 +508,7 @@ background: none;
        <property name="geometry">
         <rect>
          <x>110</x>
-         <y>105</y>
+         <y>103</y>
          <width>91</width>
          <height>20</height>
         </rect>
@@ -541,7 +541,7 @@ background: none;
        <property name="geometry">
         <rect>
          <x>67</x>
-         <y>151</y>
+         <y>154</y>
          <width>18</width>
          <height>16</height>
         </rect>
@@ -567,7 +567,7 @@ background: none;
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>170</y>
+         <y>173</y>
          <width>181</width>
          <height>20</height>
         </rect>
@@ -600,7 +600,7 @@ background: none;
        <property name="geometry">
         <rect>
          <x>96</x>
-         <y>150</y>
+         <y>153</y>
          <width>61</width>
          <height>20</height>
         </rect>
@@ -949,7 +949,7 @@ QPushButton:checked{
       <property name="geometry">
        <rect>
         <x>70</x>
-        <y>345</y>
+        <y>335</y>
         <width>100</width>
         <height>30</height>
        </rect>
@@ -1124,7 +1124,7 @@ QProgressBar {
 {
     	color: rgb(106, 106, 106);    /*前景色：文字颜色*/
     gridline-color:rgb(200, 200, 200);      /*表格中的网格线条颜色*/
-    background:white;
+    	background: rgba(248, 248, 248, 200);
     /*设置交替颜色，需要在函数属性中设置:tableWidget-&gt;setAlternatingRowColors(true)*/
     /*alternate-background-color:red;   */
     selection-color:rgb(15, 128, 255);    /*鼠标选中时前景色：文字颜色*/
@@ -1285,7 +1285,7 @@ QPushButton:hover{
         </property>
         <property name="styleSheet">
          <string notr="true">QLabel{
-	background: none;
+	background: rgba(248, 248, 248, 200);
 	border-image:none;
 	border-radius:7px;
 	border: 2px solid rgb(200, 200, 200);
@@ -1312,6 +1312,7 @@ QPushButton:hover{
         <property name="styleSheet">
          <string notr="true">QComboBox {
 	border: 2px solid rgb(179, 179, 179);
+	background: rgba(248, 248, 248, 200);
     border-radius: 10px;
     padding: 1px 2px 1px 2px; 
 	font: 75 14pt &quot;Helvetica&quot; bold ;
@@ -1372,7 +1373,7 @@ QComboBox QAbstractItemView::item:selected {
        <widget class="QLabel" name="label_6">
         <property name="geometry">
          <rect>
-          <x>53</x>
+          <x>70</x>
           <y>190</y>
           <width>100</width>
           <height>20</height>
@@ -1405,7 +1406,7 @@ background: none;
        <widget class="QLabel" name="label_PlateDetection">
         <property name="geometry">
          <rect>
-          <x>33</x>
+          <x>50</x>
           <y>220</y>
           <width>140</width>
           <height>50</height>
@@ -1416,7 +1417,7 @@ background: none;
 	background: none;
 	border-image:none;
 	border-radius:7px;
-	border: 2px solid rgb(200, 200, 200);
+	border: none;
 	color: rgb(76, 76, 76);
 	font: 75 15pt &quot;Helvetica&quot; bold;
 }</string>
@@ -1431,7 +1432,7 @@ background: none;
        <widget class="QLabel" name="label_PlateRecognition">
         <property name="geometry">
          <rect>
-          <x>191</x>
+          <x>210</x>
           <y>220</y>
           <width>140</width>
           <height>50</height>
@@ -1442,7 +1443,7 @@ background: none;
 	background: none;
 	border-image:none;
 	border-radius:7px;
-	border: 2px solid rgb(200, 200, 200);
+	border: none;
 	color: rgb(76, 76, 76);
 	font: 75 15pt &quot;Helvetica&quot; bold;
 }</string>
@@ -1457,7 +1458,7 @@ background: none;
        <widget class="QLabel" name="label_Result">
         <property name="geometry">
          <rect>
-          <x>603</x>
+          <x>600</x>
           <y>220</y>
           <width>130</width>
           <height>50</height>
@@ -1468,9 +1469,9 @@ background: none;
 	background: none;
 	border-image:none;
 	border-radius:7px;
-	border: 2px solid rgb(200, 200, 200);
+	border: none;
 	color: rgb(76, 76, 76);
-	font:  15pt &quot;Times&quot; bold;
+	font: 15pt &quot;Times&quot; bold;
 }</string>
         </property>
         <property name="text">
@@ -1483,7 +1484,7 @@ background: none;
        <widget class="QLabel" name="label_17">
         <property name="geometry">
          <rect>
-          <x>201</x>
+          <x>220</x>
           <y>190</y>
           <width>120</width>
           <height>20</height>
@@ -1516,7 +1517,7 @@ background: none;
        <widget class="QLabel" name="label_18">
         <property name="geometry">
          <rect>
-          <x>408</x>
+          <x>430</x>
           <y>190</y>
           <width>110</width>
           <height>20</height>
@@ -1549,7 +1550,7 @@ background: none;
        <widget class="QLabel" name="label_19">
         <property name="geometry">
          <rect>
-          <x>623</x>
+          <x>620</x>
           <y>190</y>
           <width>90</width>
           <height>20</height>
@@ -1612,7 +1613,7 @@ QPushButton:hover{
        <widget class="QLabel" name="label_char0">
         <property name="geometry">
          <rect>
-          <x>348</x>
+          <x>370</x>
           <y>225</y>
           <width>24</width>
           <height>40</height>
@@ -1622,8 +1623,8 @@ QPushButton:hover{
          <string notr="true">QLabel{
 	background: none;
 	border-image:none;
-	border-radius:0px;
-	border: 2px solid rgb(200, 200, 200);
+	border-radius:7px;
+	border: none;
 	color: rgb(76, 76, 76);
 	font: 75 15pt &quot;Helvetica&quot; bold;
 }</string>
@@ -1638,7 +1639,7 @@ QPushButton:hover{
        <widget class="QLabel" name="label_char1">
         <property name="geometry">
          <rect>
-          <x>383</x>
+          <x>405</x>
           <y>225</y>
           <width>24</width>
           <height>40</height>
@@ -1648,8 +1649,8 @@ QPushButton:hover{
          <string notr="true">QLabel{
 	background: none;
 	border-image:none;
-	border-radius:0px;
-	border: 2px solid rgb(200, 200, 200);
+	border-radius:7px;
+	border: none;
 	color: rgb(76, 76, 76);
 	font: 75 15pt &quot;Helvetica&quot; bold;
 }</string>
@@ -1661,7 +1662,7 @@ QPushButton:hover{
        <widget class="QLabel" name="label_char2">
         <property name="geometry">
          <rect>
-          <x>418</x>
+          <x>440</x>
           <y>225</y>
           <width>24</width>
           <height>40</height>
@@ -1671,8 +1672,8 @@ QPushButton:hover{
          <string notr="true">QLabel{
 	background: none;
 	border-image:none;
-	border-radius:0px;
-	border: 2px solid rgb(200, 200, 200);
+	border-radius:7px;
+	border: none;
 	color: rgb(76, 76, 76);
 	font: 75 15pt &quot;Helvetica&quot; bold;
 }</string>
@@ -1687,7 +1688,7 @@ QPushButton:hover{
        <widget class="QLabel" name="label_char3">
         <property name="geometry">
          <rect>
-          <x>453</x>
+          <x>475</x>
           <y>225</y>
           <width>24</width>
           <height>40</height>
@@ -1697,8 +1698,8 @@ QPushButton:hover{
          <string notr="true">QLabel{
 	background: none;
 	border-image:none;
-	border-radius:0px;
-	border: 2px solid rgb(200, 200, 200);
+	border-radius:7px;
+	border: none;
 	color: rgb(76, 76, 76);
 	font: 75 15pt &quot;Helvetica&quot; bold;
 }</string>
@@ -1713,7 +1714,7 @@ QPushButton:hover{
        <widget class="QLabel" name="label_char4">
         <property name="geometry">
          <rect>
-          <x>488</x>
+          <x>510</x>
           <y>225</y>
           <width>24</width>
           <height>40</height>
@@ -1723,8 +1724,8 @@ QPushButton:hover{
          <string notr="true">QLabel{
 	background: none;
 	border-image:none;
-	border-radius:0px;
-	border: 2px solid rgb(200, 200, 200);
+	border-radius:7px;
+	border: none;
 	color: rgb(76, 76, 76);
 	font: 75 15pt &quot;Helvetica&quot; bold;
 }</string>
@@ -1739,7 +1740,7 @@ QPushButton:hover{
        <widget class="QLabel" name="label_char5">
         <property name="geometry">
          <rect>
-          <x>523</x>
+          <x>545</x>
           <y>225</y>
           <width>24</width>
           <height>40</height>
@@ -1749,8 +1750,8 @@ QPushButton:hover{
          <string notr="true">QLabel{
 	background: none;
 	border-image:none;
-	border-radius:0px;
-	border: 2px solid rgb(200, 200, 200);
+	border-radius:7px;
+	border: none;
 	color: rgb(76, 76, 76);
 	font: 75 15pt &quot;Helvetica&quot; bold;
 }</string>
@@ -1765,7 +1766,7 @@ QPushButton:hover{
        <widget class="QLabel" name="label_char6">
         <property name="geometry">
          <rect>
-          <x>558</x>
+          <x>580</x>
           <y>225</y>
           <width>24</width>
           <height>40</height>
@@ -1775,8 +1776,8 @@ QPushButton:hover{
          <string notr="true">QLabel{
 	background: none;
 	border-image:none;
-	border-radius:0px;
-	border: 2px solid rgb(200, 200, 200);
+	border-radius:7px;
+	border: none;
 	color: rgb(76, 76, 76);
 	font: 75 15pt &quot;Helvetica&quot; bold;
 }</string>
@@ -1889,6 +1890,7 @@ QPushButton:hover{
         <property name="styleSheet">
          <string notr="true">QComboBox {
 	border: 2px solid rgb(200, 200, 200);
+	background: rgba(248, 248, 248, 200);
     border-radius: 10px;
     padding: 1px 2px 1px 2px; 
 	font: 14pt &quot;Times&quot; bold ;
@@ -2093,6 +2095,7 @@ QComboBox QAbstractItemView::item:selected {
         <property name="styleSheet">
          <string notr="true">QComboBox {
 	border: 2px solid rgb(200, 200, 200);
+	background: rgba(248, 248, 248, 200);
     border-radius: 10px;
     padding: 1px 2px 1px 2px; 
 	font: 75 14pt &quot;Helvetica&quot; bold ;
@@ -2267,6 +2270,7 @@ QComboBox QAbstractItemView::item:selected {
         <property name="styleSheet">
          <string notr="true">QComboBox {
 	border: 2px solid rgb(200, 200, 200);
+	background: rgba(248, 248, 248, 200);
     border-radius: 10px;
     padding: 1px 2px 1px 2px; 
 	font: 75 14pt &quot;Helvetica&quot; bold ;
@@ -2491,6 +2495,7 @@ QComboBox QAbstractItemView::item:selected {
         <property name="styleSheet">
          <string notr="true">QComboBox {
 	border: 2px solid rgb(200, 200, 200);
+	background: rgba(248, 248, 248, 200);
     border-radius: 10px;
     padding: 1px 2px 1px 2px; 
 	font: 75 14pt &quot;Helvetica&quot; bold ;
@@ -2715,6 +2720,7 @@ QComboBox QAbstractItemView::item:selected {
         <property name="styleSheet">
          <string notr="true">QComboBox {
 	border: 2px solid rgb(200, 200, 200);
+	background: rgba(248, 248, 248, 200);
     border-radius: 10px;
     padding: 1px 2px 1px 2px; 
 	font: 75 14pt &quot;Helvetica&quot; bold ;
@@ -2939,6 +2945,7 @@ QComboBox QAbstractItemView::item:selected {
         <property name="styleSheet">
          <string notr="true">QComboBox {
 	border: 2px solid rgb(200, 200, 200);
+	background: rgba(248, 248, 248, 200);
     border-radius: 10px;
     padding: 1px 2px 1px 2px; 
 	font: 75 14pt &quot;Helvetica&quot; bold ;
@@ -3163,6 +3170,7 @@ QComboBox QAbstractItemView::item:selected {
         <property name="styleSheet">
          <string notr="true">QComboBox {
 	border: 2px solid rgb(200, 200, 200);
+	background: rgba(248, 248, 248, 200);
     border-radius: 10px;
     padding: 1px 2px 1px 2px; 
 	font: 75 14pt &quot;Helvetica&quot; bold ;
@@ -3449,7 +3457,7 @@ background: none;
 	background:rgba(15, 128, 255, 93);
 	border-radius:10px;
 	color: rgb(76, 76, 76);
-	font: 75 14pt &quot;Helvetica&quot; bold;
+	font: 75 13pt &quot;Helvetica&quot; bold;
 }
 
 QPushButton:hover{
@@ -3457,7 +3465,7 @@ QPushButton:hover{
 	background:rgba(15, 128, 255, 43);
 	border-radius:10px;
 	color: rgb(76, 76, 76);
-	font: 75 15pt &quot;Helvetica&quot; bold;
+	font: 75 14pt &quot;Helvetica&quot; bold;
 }</string>
         </property>
         <property name="text">
@@ -3669,9 +3677,11 @@ background: none;
          </property>
          <property name="styleSheet">
           <string notr="true">QLineEdit{
-	border: 2px solid rgb(179, 179, 179);
+	border: 2px solid rgb(200, 200, 200);
+	background: rgba(255, 255, 255, 200);
 	border-radius:10px;
 	font: 15pt &quot;Times&quot; bold;
+	color: rgb(76, 76, 76);
 }
 </string>
          </property>
@@ -3693,9 +3703,11 @@ background: none;
          </property>
          <property name="styleSheet">
           <string notr="true">QLineEdit{
-	border: 2px solid rgb(179, 179, 179);
+	border: 2px solid rgb(200, 200, 200);
+	background: rgba(255, 255, 255, 200);
 	border-radius:10px;
 	font: 15pt &quot;Times&quot; bold;
+	color: rgb(76, 76, 76);
 }
 </string>
          </property>
@@ -3750,9 +3762,11 @@ background: none;
          </property>
          <property name="styleSheet">
           <string notr="true">QLineEdit{
-	border: 2px solid rgb(179, 179, 179);
+	border: 2px solid rgb(200, 200, 200);
+	background: rgba(255, 255, 255, 200);
 	border-radius:10px;
 	font: 15pt &quot;Times&quot; bold;
+	color: rgb(76, 76, 76);
 }
 </string>
          </property>
@@ -3808,10 +3822,11 @@ background: none;
         </property>
         <property name="styleSheet">
          <string notr="true">QComboBox {
-	border: 2px solid rgb(15, 128, 255);
+	border: 2px solid rgb(200, 200, 200);
+	background: rgba(248, 248, 248, 200);
     border-radius: 10px;
     padding: 1px 2px 1px 2px; 
-	font: 75 14pt &quot;Helvetica&quot; bold ;
+	font: 75 13pt &quot;Helvetica&quot; bold ;
 	color: rgb(76, 76, 76);
 
 }
@@ -3837,7 +3852,7 @@ QComboBox QAbstractItemView {
 	border-radius:0px;
 	background:rgba(255, 255, 255,200);
 	color: rgb(76, 76, 76);
-	font: 75 14pt &quot;Helvetica&quot; bold ;
+	font: 75 13pt &quot;Helvetica&quot; bold ;
 	color: rgb(76, 76, 76);
 }
 QComboBox QAbstractItemView::item {
@@ -3852,15 +3867,89 @@ QComboBox QAbstractItemView::item:selected {
         </property>
         <item>
          <property name="text">
-          <string>     DEFAULT</string>
+          <string>      DEFAULT</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string> User Specified</string>
+          <string> USER SPECIFIED</string>
          </property>
         </item>
        </widget>
+       <widget class="QGroupBox" name="groupBox_13">
+        <property name="geometry">
+         <rect>
+          <x>33</x>
+          <y>208</y>
+          <width>700</width>
+          <height>64</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QGroupBox{
+	border: 2px solid rgb(220, 220, 220);
+	border-radius:7px;
+	background: rgba(248, 248, 248, 200);
+	margin-top: 11 px;
+}
+
+QGroupBox::title {
+background: rgb(248, 248, 248);
+	subcontrol-origin: margin;
+	subcontrol-position: top center;	
+	padding: 1 4px;
+	color: rgba(15, 128, 255, 193);
+	border: 2px solid rgba(15, 128, 255, 193);
+	border-radius:10px;
+}</string>
+        </property>
+        <property name="title">
+         <string/>
+        </property>
+       </widget>
+       <zorder>groupBox_13</zorder>
+       <zorder>tableWidget_history</zorder>
+       <zorder>pushButton_clearHistory</zorder>
+       <zorder>pushButton_lowProb</zorder>
+       <zorder>pushButton_3</zorder>
+       <zorder>label_platePreview</zorder>
+       <zorder>comboBox_selectType</zorder>
+       <zorder>label_6</zorder>
+       <zorder>label_PlateDetection</zorder>
+       <zorder>label_PlateRecognition</zorder>
+       <zorder>label_Result</zorder>
+       <zorder>label_17</zorder>
+       <zorder>label_18</zorder>
+       <zorder>label_19</zorder>
+       <zorder>pushButton_5</zorder>
+       <zorder>label_char0</zorder>
+       <zorder>label_char1</zorder>
+       <zorder>label_char2</zorder>
+       <zorder>label_char3</zorder>
+       <zorder>label_char4</zorder>
+       <zorder>label_char5</zorder>
+       <zorder>label_char6</zorder>
+       <zorder>label_20</zorder>
+       <zorder>label_21</zorder>
+       <zorder>pushButton_8</zorder>
+       <zorder>comboBox_p0</zorder>
+       <zorder>comboBox_p1</zorder>
+       <zorder>comboBox_p2</zorder>
+       <zorder>comboBox_p3</zorder>
+       <zorder>comboBox_p4</zorder>
+       <zorder>comboBox_p5</zorder>
+       <zorder>comboBox_p6</zorder>
+       <zorder>label_28</zorder>
+       <zorder>label_29</zorder>
+       <zorder>pushButton_9</zorder>
+       <zorder>label_30</zorder>
+       <zorder>groupBox_12</zorder>
+       <zorder>comboBox_model</zorder>
       </widget>
      </widget>
      <widget class="QWidget" name="page_5">

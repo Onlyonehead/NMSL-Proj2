@@ -4,7 +4,23 @@
 void MainClient::on_pushButton_10_clicked()
 {
     QString dir = QFileDialog::getExistingDirectory(this, tr("open file"), "/Users/Haibara/Desktop");
-    this->dirForImage = dir;
+    if(!dir.isEmpty()){
+
+        this->dirForImage = dir;
+
+        ui->pushButton_10->setStyleSheet("QPushButton{"
+                                         "border: 2px solid rgb(15, 128, 255);"
+                                         "background:rgba(15, 128, 255, 93);"
+                                         "border-radius:10px;"
+                                         "color: rgb(76, 76, 76);"
+                                         "font: 75 14pt \"Helvetica\" bold;}"
+                                         "QPushButton:hover{"
+                                         "border: 2px solid rgb(15, 128, 255);"
+                                         "background:rgba(15, 128, 255, 43);"
+                                         "border-radius:10px;"
+                                         "color: rgb(76, 76, 76);"
+                                         "font: 75 15pt \"Helvetica\" bold;}");
+    }
 }
 
 void MainClient::on_pushButton_9_clicked()
@@ -28,6 +44,19 @@ void MainClient::on_pushButton_9_clicked()
 
 void MainClient::on_pushButton_generate_clicked()
 {
+    ui->pushButton_10->setStyleSheet("QPushButton{"
+                                     "border: 2px solid rgb(179, 179, 179);"
+                                     "background:rgba(248, 248, 248,220);"
+                                     "border-radius:10px;"
+                                     "color: rgb(76, 76, 76);"
+                                     "font: 75 14pt \"Helvetica\" bold;}"
+                                     "QPushButton:hover{"
+                                     "border: 2px solid rgb(15, 128, 255);"
+                                     "background:rgba(15, 128, 255, 43);"
+                                     "border-radius:10px;"
+                                     "color: rgb(76, 76, 76);"
+                                     "font: 75 15pt \"Helvetica\" bold;}");
+
     QString dir = this->dirForImage;
     int h_layer = ui->lineEdit_Hlayer->text().trimmed().toInt();
     int iter = ui->lineEdit_iter->text().trimmed().toInt();
@@ -45,7 +74,11 @@ void MainClient::on_pushButton_generate_clicked()
     ui->progressBar->setRange(0, 100);
 
     QApplication::processEvents();
+    QApplication::processEvents();
     ui->progressBar->setValue(10);
+    QApplication::processEvents();
+    QApplication::processEvents();
+    QApplication::processEvents();
     QApplication::processEvents();
 
     CharRecognition::ANN_Train(dir.toStdString(), h_layer, iter, thresholdValue);
@@ -75,4 +108,5 @@ void MainClient::on_pushButton_generate_clicked()
     QApplication::processEvents();
 
     ui->progressBar->setVisible(false);
+
 }

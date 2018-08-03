@@ -15,6 +15,7 @@ class PlateRecognition {
 
 public:
     static Mat process(Mat);
+    static string carType(Mat);
 
 private:
     static int getRowSum(Mat& img, int row);

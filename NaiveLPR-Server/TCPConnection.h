@@ -6,6 +6,8 @@
 #include "sqltool.h"
 #include "myserver.h"
 
+class MyServer;
+
 class TCPConnection : public QWidget
 {
     Q_OBJECT
@@ -13,7 +15,10 @@ class TCPConnection : public QWidget
 public:
     TCPConnection(QWidget *parent = 0);
 
+    ~TCPConnection();
+
 private:
+    MyServer *server;
 
 private slots:
 
