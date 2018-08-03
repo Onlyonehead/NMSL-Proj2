@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network sql
+QT       += core gui network sql charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     mainclient_msg.cpp \
     page_lpr1.cpp \
     page_lpr2.cpp \
-    CharRecognition.cpp
+    CharRecognition.cpp \
+    settings.cpp
 
 HEADERS  += mainclient.h \
     forgetpassword.h \

@@ -283,8 +283,89 @@ void Processor::work ()
         out << QString("Done");
     }
 
+    if(function == "del_entry"){
+        QString pic_name = list.at(0);
 
+        SQLTool::del("plates", "pic_name", pic_name);
 
+        out << function;
+        out << QString("Done");
+    }
+
+    if(function == "showUser"){
+        QVector<QStringList> result;
+
+        QSqlQuery query;
+        QStringList list;
+        SQLTool::search(query, "userdata");
+        while (query.next()) {
+            list.clear();
+            list.append(query.value(0).toString());
+            list.append(query.value(2).toString());
+            list.append(query.value(3).toString());
+            list.append(query.value(4).toString());
+            list.append(query.value(5).toString());
+            list.append(query.value(6).toString());
+            result.append(list);
+        }
+
+        out << function;
+        out << result;
+    }
+
+    if(function == "updateUser"){
+        QString username = list.at(0);
+        QString name = list.at(1);
+        QString gender = list.at(2);
+        QString position = list.at(3);
+        QString email = list.at(4);
+
+        SQLTool::update("userdata", "name", name, "username", username);
+        SQLTool::update("userdata", "gender", gender, "username", username);
+        SQLTool::update("userdata", "position", position, "username", username);
+        SQLTool::update("userdata", "email", email, "username", username);
+
+        out << function;
+        out << QString("Done");
+    }
+
+    if(function == "pp2_anu"){
+        QString username = list.at(0);
+        QSqlQuery query;
+        SQLTool::search(query, "username", "userdata", "username", username);
+        out << function;
+        out << query.next();
+    }
+
+    if(function == "pp2_ane"){
+        QString email = list.at(0);
+        QSqlQuery query;
+        SQLTool::search(query, "email", "userdata", "email", email);
+        out << function;
+        out << query.next();
+    }
+
+    if(function == "addUser"){
+        QString username = list.at(0);
+        QString password = list.at(1);
+        QString name = list.at(2);
+        QString gender = list.at(3);
+        QString position = list.at(4);
+        QString email = list.at(5);
+        QString userPic = list.at(6);
+        QStringList staffInfo;
+        staffInfo.append(username);
+        staffInfo.append(password);
+        staffInfo.append(name);
+        staffInfo.append(gender);
+        staffInfo.append(position);
+        staffInfo.append(email);
+        staffInfo.append(userPic);
+        SQLTool::insert("userdata", staffInfo);
+
+        out << function;
+        out << QString("Done");
+    }
 
 
     out.device()->seek(0);

@@ -109,4 +109,5 @@ void MainClient::on_pushButton_generate_clicked()
 
     ui->progressBar->setVisible(false);
 
+
 }

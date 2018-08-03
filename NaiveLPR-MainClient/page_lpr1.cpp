@@ -36,6 +36,17 @@ void MainClient::on_pushButton_clearHistory_clicked()
     ui->comboBox_p6->setCurrentIndex(0);
 }
 
+void MainClient::on_tableWidget_history_itemDoubleClicked(QTableWidgetItem *item){
+    if(QMessageBox::Yes==QMessageBox::question(this, "警告", "Confirm to delete this entry ?",
+                                               QMessageBox::Yes, QMessageBox::No)){
+        QString pic_name = ui->tableWidget_history->item(item->row(), 0)->text();
+        QStringList msg;
+        msg.append("del_entry");
+        msg.append(pic_name);
+        sendMessage(msg);
+    }
+}
+
 void MainClient::on_tableWidget_history_itemClicked(QTableWidgetItem *item){
 
     this->processPhase = 0;
@@ -436,34 +447,3 @@ void MainClient::on_pushButton_8_clicked()
     sendMessage(msg);
 }
 
-
-bool MainClient::eventFilter(QObject *watched, QEvent *event) {
-    if (watched == ui->label_platePreview) {
-        if (event->type() == QEvent::MouseButtonPress) {
-
-            if(ui->tableWidget_history->currentItem() == NULL){
-                QMessageBox::warning(this,"警告", "\n请选中条目！",QMessageBox::Close);
-                return false;
-            }
-
-            QString tmp = ui->tableWidget_history->item(
-                        ui->tableWidget_history->currentItem()->row(), 0)->text() + ".png";
-
-
-            QString fileName = DIR + QString("/plates/") + tmp;
-
-            Mat m = imread(fileName.toStdString(), 1);
-            namedWindow("Source Image");
-            resizeWindow("Source Image", 600, 450);
-            moveWindow("Source Image", 425, 120);
-            imshow("Source Image", m);
-            return true;
-        }
-
-        if(event->type() == QEvent::MouseButtonRelease){
-            destroyWindow("Source Image");
-        }
-    }
-
-    return QWidget::eventFilter(watched, event);
-}

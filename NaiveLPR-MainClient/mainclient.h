@@ -51,6 +51,7 @@
 #include <QDate>
 #include <QListView>
 #include <QFileDialog>
+#include <QtCharts>
 
 #include "opencv2/opencv.hpp"
 #include "opencv2/core/core.hpp"
@@ -111,6 +112,8 @@ private slots:
 
     void on_tableWidget_history_itemClicked(QTableWidgetItem *item);
 
+    void on_tableWidget_history_itemDoubleClicked(QTableWidgetItem *item);
+
     void on_pushButton_lowProb_clicked();
 
     void on_comboBox_selectType_currentTextChanged(const QString &arg1);
@@ -128,6 +131,24 @@ private slots:
     void on_pushButton_9_clicked();
 
     void on_pushButton_generate_clicked();
+
+    void on_pushButton_updatePageShowStaff_clicked();
+
+    void on_pushButton_updatePageClearStaff_clicked();
+
+    void on_pushButton_changeStaffInfo_clicked();
+
+    void on_tableWidget_updateShowStaffInfo_cellClicked(int row, int column);
+
+    void on_pushButton_confirmNewStaff_clicked();
+
+    void on_pushButton_cancelNewStaff_clicked();
+
+    void on_lineEdit_addNewUsername_editingFinished();
+
+    void on_lineEdit_repeatPassword_editingFinished();
+
+    void on_lineEdit_addNewEmail_editingFinished();
 
 signals:
     void stringReturn(QString);
@@ -155,6 +176,9 @@ private:
 
     //for page_lpr2
     QString dirForImage;
+
+    //for settings
+    QVector<QStringList> userdata_settings;
 
 };
 

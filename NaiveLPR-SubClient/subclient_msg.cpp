@@ -138,6 +138,13 @@ void SubClient::readMessage()
             QPixmap *pixmap = new QPixmap(DIR + QString("/users/") + list.at(5));
             if (pixmap->isNull()){
                 download("/users/" + list.at(5), DIR + QString("/users/") + list.at(5));
+
+                QElapsedTimer t;
+                t.start();
+                while(t.elapsed()<500)
+                    QCoreApplication::processEvents();
+
+                pixmap = new QPixmap(DIR + QString("/users/") + list.at(5));
             }
 
             if(pixmap->isNull()){

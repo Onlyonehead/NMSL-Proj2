@@ -123,4 +123,92 @@ void MainClient::readMessage()
         }
     }
 
+    if(from == "del_entry"){
+        QString msg;
+        in >> msg;
+        if(msg == "Done"){
+            QMessageBox::information(this,"提示", "\n删除条目成功！",QMessageBox::Ok);
+            on_pushButton_3_clicked();
+            ui->tableWidget_history->setCurrentCell(-1, -1);
+        }
+    }
+
+    if(from == "showUser"){
+        on_pushButton_updatePageClearStaff_clicked();
+        int i = 0;
+        QVector<QStringList> result;
+        in >> result;
+        this->userdata_settings = result;
+        for(QStringList list : result){
+            if(list.at(0) == "camera"){
+                continue;
+            }
+            ui->tableWidget_updateShowStaffInfo->insertRow(i);
+
+            ui->tableWidget_updateShowStaffInfo->setItem(i, 0, new QTableWidgetItem(list.at(1)));
+            ui->tableWidget_updateShowStaffInfo->item(i, 0)->setTextAlignment(Qt::AlignCenter);
+
+            i++;
+        }
+        ui->tableWidget_updateShowStaffInfo->setRowCount(i);
+        progressBar();
+    }
+
+    if(from == "updateUser"){
+        QString msg;
+        in >> msg;
+        if(msg == "Done"){
+            QMessageBox::information(this,"提示", "\n用户信息修改成功！",QMessageBox::Ok);
+            on_pushButton_updatePageShowStaff_clicked();
+        }
+
+    }
+
+    if(from == "pp2_anu"){
+        bool isExisted;
+        in >> isExisted;
+        if(isExisted == true){
+            ui->label_newStaffUsernameTip->setVisible(true);
+            ui->lineEdit_addNewPassword->setEnabled(false);
+            ui->lineEdit_repeatPassword->setEnabled(false);
+            ui->lineEdit_addNewName->setEnabled(false);
+            ui->lineEdit_addNewEmail->setEnabled(false);
+            ui->pushButton_confirmNewStaff->setEnabled(false);
+        }else {
+            ui->label_newStaffUsernameTip->setVisible(false);
+            ui->lineEdit_addNewPassword->setEnabled(true);
+            ui->lineEdit_repeatPassword->setEnabled(true);
+            ui->lineEdit_addNewName->setEnabled(true);
+            ui->lineEdit_addNewEmail->setEnabled(true);
+            ui->pushButton_confirmNewStaff->setEnabled(true);
+        }
+    }
+
+    if(from == "pp2_ane"){
+        bool isExisted;
+        in >> isExisted;
+        if(isExisted){
+            ui->label_newStaffEmailTip->setVisible(true);
+            ui->pushButton_confirmNewStaff->setEnabled(false);
+        }else {
+            ui->label_newStaffEmailTip->setVisible(false);
+            ui->pushButton_confirmNewStaff->setEnabled(true);
+        }
+    }
+
+    if(from == "addUser"){
+        QString msg;
+        in >> msg;
+        if(msg == "Done"){
+            QMessageBox::information(this,"提示", "\n添加用户成功！",QMessageBox::Ok);
+            ui->lineEdit_addNewUsername->clear();
+            ui->lineEdit_addNewPassword->clear();
+            ui->lineEdit_repeatPassword->clear();
+            ui->lineEdit_addNewName->clear();
+            ui->lineEdit_addNewEmail->clear();
+            ui->label_showNewPortrait->clear();
+            ui->label_showNewPortraitPath->clear();
+        }
+    }
+
 }

@@ -67,6 +67,18 @@ void MainClient::showString(QString s1, QString s2, QString s3, QString s4, QStr
 
     ui->label_platePreview->installEventFilter(this);
 
+    ui->label_showEditPortrait->installEventFilter(this);
+    ui->label_showEditPortrait->setAcceptDrops(true);
+    ui->label_showEditPortraitPath->setVisible(false);
+
+    ui->label_showNewPortrait->installEventFilter(this);
+    ui->label_showNewPortrait->setAcceptDrops(true);
+    ui->label_showNewPortraitPath->setVisible(false);
+
+    ui->label_repeatPasswordTip->setVisible(false);
+    ui->label_newStaffUsernameTip->setVisible(false);
+    ui->label_newStaffEmailTip->setVisible(false);
+
 
     int fontId = QFontDatabase::addApplicationFont(":/font/fa-solid-900.ttf");
     QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
@@ -91,6 +103,13 @@ void MainClient::showString(QString s1, QString s2, QString s3, QString s4, QStr
     QPixmap *pixmap = new QPixmap(DIR + QString("/users/") + s6);
     if (pixmap->isNull()){
         download("/users/" + s6, DIR + QString("/users/") + s6);
+
+        QElapsedTimer t;
+        t.start();
+        while(t.elapsed()<500)
+            QCoreApplication::processEvents();
+
+        pixmap = new QPixmap(DIR + QString("/users/") + s6);
     }
 
     if(pixmap->isNull()){
@@ -137,6 +156,46 @@ void MainClient::showString(QString s1, QString s2, QString s3, QString s4, QStr
     ui->label_28->setFont(font);
     ui->label_28->setText(QChar(0xf1b8));
     ui->label_28->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_134->setFont(font);
+    ui->label_134->setText(QChar(0xf2c2));
+    ui->label_134->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_135->setFont(font);
+    ui->label_135->setText(QChar(0xf5c2));
+    ui->label_135->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_136->setFont(font);
+    ui->label_136->setText(QChar(0xf1ae));
+    ui->label_136->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_139->setFont(font);
+    ui->label_139->setText(QChar(0xf2b6));
+    ui->label_139->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_144->setFont(font);
+    ui->label_144->setText(QChar(0xf05a));
+    ui->label_144->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_145->setFont(font);
+    ui->label_145->setText(QChar(0xf53c));
+    ui->label_145->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_146->setFont(font);
+    ui->label_146->setText(QChar(0xf248));
+    ui->label_146->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_147->setFont(font);
+    ui->label_147->setText(QChar(0xf599));
+    ui->label_147->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_148->setFont(font);
+    ui->label_148->setText(QChar(0xf1ae));
+    ui->label_148->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_149->setFont(font);
+    ui->label_149->setText(QChar(0xf0e0));
+    ui->label_149->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
 
     style = false;
     QFile *file = new QFile(CONFIG_DIR);
@@ -188,6 +247,10 @@ void MainClient::showString(QString s1, QString s2, QString s3, QString s4, QStr
     ui->comboBox_p5->setView(new QListView());
     ui->comboBox_p6->setView(new QListView());
     ui->comboBox_model->setView(new QListView());
+    ui->comboBox_updateStaffGender->setView(new QListView());
+    ui->comboBox_updateStaffPosition->setView(new QListView());
+    ui->comboBox_addNewGender->setView(new QListView());
+    ui->comboBox_addNewPosition->setView(new QListView());
 
 
     ui->pushButton_switch->setEnabled(true);
@@ -198,6 +261,11 @@ void MainClient::showString(QString s1, QString s2, QString s3, QString s4, QStr
     ui->tableWidget_history->horizontalHeader()->setStretchLastSection(true);
     ui->tableWidget_history->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableWidget_history->setAlternatingRowColors(true);
+
+
+    ui->tableWidget_updateShowStaffInfo->horizontalHeader()->setStretchLastSection(true);
+    ui->tableWidget_updateShowStaffInfo->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableWidget_updateShowStaffInfo->setAlternatingRowColors(true);
 
 
     file = new QFile(MODEL_DIR);
@@ -465,4 +533,127 @@ void MainClient::on_style_change_clicked()
     file->close();
 }
 
+
+
+bool MainClient::eventFilter(QObject *watched, QEvent *event) {
+    if (watched == ui->label_platePreview) {
+        if (event->type() == QEvent::MouseButtonPress) {
+
+            if(ui->tableWidget_history->currentItem() == NULL){
+                QMessageBox::warning(this,"警告", "\n请选中条目！",QMessageBox::Close);
+                return false;
+            }
+
+            QString tmp = ui->tableWidget_history->item(
+                        ui->tableWidget_history->currentItem()->row(), 0)->text() + ".png";
+
+
+            QString fileName = DIR + QString("/plates/") + tmp;
+
+            Mat m = imread(fileName.toStdString(), 1);
+            namedWindow("Source Image");
+            resizeWindow("Source Image", 600, 450);
+            moveWindow("Source Image", 425, 120);
+            imshow("Source Image", m);
+            return true;
+        }
+
+        if(event->type() == QEvent::MouseButtonRelease){
+            destroyWindow("Source Image");
+        }
+    }
+
+    if (watched == ui->label_showEditPortrait) {
+        if (event->type() == QEvent::DragEnter) {
+
+            QDragEnterEvent *dee = dynamic_cast<QDragEnterEvent *>(event);
+            dee->acceptProposedAction();
+            return true;
+        } else if (event->type() == QEvent::Drop) {
+
+            QDropEvent *de = dynamic_cast<QDropEvent *>(event);
+            QList<QUrl> urls = de->mimeData()->urls();
+
+            if (urls.isEmpty()) { return true; }
+            QString path = urls.first().toLocalFile();
+
+
+            QImage image(path);
+            if (!image.isNull()) {
+                image = image.scaled(92, 92,
+                                     Qt::KeepAspectRatio,
+                                     Qt::SmoothTransformation);
+                ui->label_showEditPortrait->setPixmap(QPixmap::fromImage(image));
+                ui->label_showEditPortraitPath->setText(path);
+            }
+
+            return true;
+        }
+
+        if (event->type() == QEvent::MouseButtonDblClick) {
+            QStringList picture = QFileDialog::getOpenFileNames(this, tr("open file"),
+                                                                tr("图片文件(*png *jpg)"));
+            if(picture.isEmpty()){
+                ui->label_showEditPortrait->setText("Preview");
+                return true;
+            }
+
+            QImage tempPortrait(picture.at(0));
+            QPixmap portrait = QPixmap::fromImage(tempPortrait.scaled(92, 92, Qt::KeepAspectRatio,
+                                                                      Qt::SmoothTransformation));
+            ui->label_showEditPortraitPath->setText(picture.at(0));
+            ui->label_showEditPortrait->setPixmap(portrait);
+            ui->label_showEditPortrait->show();
+
+            return true;
+        }
+    }
+
+    if (watched == ui->label_showNewPortrait) {
+        if (event->type() == QEvent::DragEnter) {
+
+            QDragEnterEvent *dee = dynamic_cast<QDragEnterEvent *>(event);
+            dee->acceptProposedAction();
+            return true;
+        } else if (event->type() == QEvent::Drop) {
+
+            QDropEvent *de = dynamic_cast<QDropEvent *>(event);
+            QList<QUrl> urls = de->mimeData()->urls();
+
+            if (urls.isEmpty()) { return true; }
+            QString path = urls.first().toLocalFile();
+
+
+            QImage image(path);
+            if (!image.isNull()) {
+                image = image.scaled(152, 152,
+                                     Qt::KeepAspectRatio,
+                                     Qt::SmoothTransformation);
+                ui->label_showNewPortrait->setPixmap(QPixmap::fromImage(image));
+                ui->label_showNewPortraitPath->setText(path);
+            }
+
+            return true;
+        }
+
+        if (event->type() == QEvent::MouseButtonDblClick) {
+            QStringList picture = QFileDialog::getOpenFileNames(this, tr("open file"),
+                                                                tr("图片文件(*png *jpg)"));
+            if(picture.isEmpty()){
+                ui->label_showNewPortrait->setText("Preview");
+                return true;
+            }
+
+            QImage tempPortrait(picture.at(0));
+            QPixmap portrait = QPixmap::fromImage(tempPortrait.scaled(152, 152, Qt::KeepAspectRatio,
+                                                                      Qt::SmoothTransformation));
+            ui->label_showNewPortraitPath->setText(picture.at(0));
+            ui->label_showNewPortrait->setPixmap(portrait);
+            ui->label_showNewPortrait->show();
+
+            return true;
+        }
+    }
+    return QWidget::eventFilter(watched, event);
+}
 
