@@ -269,6 +269,94 @@ void SubClient::readMessage()
         ui->label_showPlate->show();
         progressBar();
     }
+    //ETCpage send enter_highway_image
+    if(from == "ETCp_sendEnterPic"){
+        QString plateName;
+        in >> plateName;
+
+        if(plateName == "FAIL"){
+            QMessageBox::warning(this, "warning", "\n未检测到车牌", QMessageBox::Close);
+            ui->label_vehicleFromPic->clear();
+            ui->label_vehicleFromPic->setVisible(false);
+            return;
+        }else {
+            QMessageBox::information(this, "information", "\n上传成功！", QMessageBox::Ok);
+        }
+
+        QString plate;
+        in >> plate;
+
+        bool isPLateETCAvailable;
+        in >> isPLateETCAvailable;
+
+        if(isPLateETCAvailable == false){
+            QMessageBox::warning(this, "Warning", "\n此车辆未办理ETC服务，请走人工通道", QMessageBox::Close);
+        }
+    }
+    //ETC page send leave_highway_pic
+    if(from == "ETCp_sendLeavePic"){
+        QString plateName;
+        in >> plateName;
+
+        if(plateName == "FAIL"){
+            QMessageBox::warning(this, "warning", "\n未检测到车牌", QMessageBox::Close);
+            ui->label_vehicleTarPic->clear();
+            ui->label_vehicleTarPic->setVisible(false);
+            return;
+        }else {
+            QMessageBox::information(this, "information", "\n上传成功!", QMessageBox::Ok);
+        }
+
+        QString plate;
+        in >> plate;
+
+
+    }
+    //ETCpage send enter_highway_image
+    if(from == "ETCp_sendEnterPic"){
+        QString plateName;
+        in >> plateName;
+
+        if(plateName == "FAIL"){
+            QMessageBox::warning(this, "warning", "\n未检测到车牌", QMessageBox::Close);
+            ui->label_vehicleFromPic->clear();
+            ui->label_vehicleFromPic->setVisible(false);
+            return;
+        }else {
+            QMessageBox::information(this, "information", "\n上传成功！", QMessageBox::Ok);
+        }
+
+        QString plate;
+        in >> plate;
+
+        bool isPLateETCAvailable;
+        in >> isPLateETCAvailable;
+
+        if(isPLateETCAvailable == false){
+            QMessageBox::warning(this, "Warning", "\n此车辆未办理ETC服务，请走人工通道", QMessageBox::Close);
+        }
+    }
+    //ETC page send leave_highway_pic
+    if(from == "ETCp_sendLeavePic"){
+        QString plateName;
+        in >> plateName;
+
+        if(plateName == "FAIL"){
+            QMessageBox::warning(this, "warning", "\n未检测到车牌", QMessageBox::Close);
+            ui->label_vehicleTarPic->clear();
+            ui->label_vehicleTarPic->setVisible(false);
+            return;
+        }else {
+            QMessageBox::information(this, "information", "\n上传成功!", QMessageBox::Ok);
+        }
+
+        QString plate;
+        in >> plate;
+
+
+    }
+
+
 
 
 //    m_tcpsocket->disconnectFromHost();

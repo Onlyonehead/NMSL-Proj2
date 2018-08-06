@@ -1,5 +1,7 @@
 #include "login.h"
 #include <QApplication>
+#include <QtCharts>
+using namespace QtCharts;
 
 int main(int argc, char *argv[])
 {

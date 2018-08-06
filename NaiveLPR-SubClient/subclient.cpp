@@ -479,3 +479,121 @@ void SubClient::progressBar_fast()
     ui->progressBar_2->setVisible(false);
 }
 
+
+void SubClient::on_pushButton_EnterhighwayPic_clicked()
+{
+    QStringList enterHighwayPic = QFileDialog::getOpenFileNames(this, tr("open file"), "/Users/Haibara/Desktop",
+                                                                   tr("图片文件(*png *jpg)"));
+
+       if(enterHighwayPic.isEmpty()){
+           return;
+       }
+
+       ui->label_EnterPicPath->clear();
+       ui->label_vehicleFromPic->clear();
+       QImage tempEnterPic(enterHighwayPic.at(0));
+       QPixmap EnterPic = QPixmap::fromImage(tempEnterPic.scaled(200, 200, Qt::KeepAspectRatio,
+                                             Qt::SmoothTransformation));
+       ui->label_EnterPicPath->setText(enterHighwayPic.at(0));
+       ui->label_vehicleFromPic->setPixmap(EnterPic);
+       ui->label_vehicleFromPic->show();
+
+}
+
+void SubClient::on_pushButton_leaveHighwayPic_clicked()
+{
+    QStringList leaveHighwayPic = QFileDialog::getOpenFileNames(this, tr("open file"), "/Users/Haibara/Desktop",
+                                                                tr("图片文件(*png *jpg)"));
+    if(leaveHighwayPic.isEmpty()){
+        return;
+    }
+
+    ui->label_LeavePicPath->clear();
+    ui->label_vehicleTarPic->clear();
+    QImage tempLeavePic(leaveHighwayPic.at(0));
+    QPixmap LeavePic = QPixmap::fromImage(tempLeavePic.scaled(200, 200, Qt::KeepAspectRatio,
+                                                              Qt::SmoothTransformation));
+    ui->label_LeavePicPath->setText(leaveHighwayPic.at(0));
+    ui->label_vehicleTarPic->setPixmap(LeavePic);
+    ui->label_vehicleTarPic->show();
+
+}
+
+void SubClient::on_pushButton_confirmEnterHighwayPic_clicked()
+{
+    if(ui->label_EnterPicPath->text().isEmpty()){
+        QMessageBox::warning(this, tr("warning"), tr("\n未选择图片！"), QMessageBox::Close, QMessageBox::Close);
+    }
+
+    QString set_off_coordinate = ui->label_enterPicCoordinate->text();
+    QString enter_highway_datetime = ui->dateTimeEdit_vehicleFromDatetime->dateTime().toString();
+    QString enterHighwayPicName = enter_highway_datetime + ".png";
+
+    QString EnterPicPath = ui->label_EnterPicPath->text();
+
+    QBuffer buffer;
+    QByteArray message;
+    QDataStream out(&message, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_5_7);
+    buffer.open(QIODevice::ReadWrite);
+    QImage img;
+    img.load(EnterPicPath);
+    img.save(&buffer, "png");
+    out << qint32(buffer.size());
+    out << QString("/plates/" + enterHighwayPicName.split(".").at(0) + ".png");
+    out << buffer.data();
+
+    m_socket->write(message);
+    m_socket->flush();
+
+    QElapsedTimer t;
+    t.start();
+    while (t.elapsed() < 500) {
+        QCoreApplication::processEvents();
+    }
+    QStringList list;
+    list.append("ETCp_sendEnterPic");
+    list.append(enterHighwayPicName);
+    list.append(set_off_coordinate);
+    sendMessage(list);
+
+}
+
+void SubClient::on_pushButton_confirmLeaveHighwayPic_clicked()
+{
+    if(ui->label_LeavePicPath->text().isEmpty()){
+        QMessageBox::warning(this, tr("warning"), tr("\n未选择图片！"), QMessageBox::Close, QMessageBox::Close);
+    }
+    QString leave_highway_datetime = ui->dateTimeEdit_vehicleTarDateTime->dateTime().toString();
+    QString leaveHighwayPicName = leave_highway_datetime + ".png";
+
+    QString LeavePicPath = ui->label_LeavePicPath->text();
+    QString destination_coordinate = ui->label_leavePicCoordinate->text();
+
+    QBuffer buffer;
+    QByteArray message;
+    QDataStream out(&message, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_5_7);
+    buffer.open(QIODevice::ReadWrite);
+    QImage img;
+    img.load(LeavePicPath);
+    img.save(&buffer, "png");
+    out << qint32(buffer.size());
+    out << QString("/plates/" + leaveHighwayPicName.split(".").at(0) + "png");
+    out << buffer.data();
+
+    m_socket->write(message);
+    m_socket->flush();
+
+    QElapsedTimer t;
+    t.start();
+    while (t.elapsed() < 500) {
+        QCoreApplication::processEvents();
+    }
+    QStringList list;
+    list.append("ETCp_sendLeavePic");
+    list.append(leaveHighwayPicName);
+    list.append(destination_coordinate);
+    sendMessage(list);
+
+}

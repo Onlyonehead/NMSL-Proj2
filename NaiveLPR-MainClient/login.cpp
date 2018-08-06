@@ -2,6 +2,7 @@
 #include "ui_login.h"
 #include "forgetpassword.h"
 #include "mainclient.h"
+#include <hiredis/hiredis.h>
 
 
 /**

@@ -83,6 +83,14 @@ private slots:
 
     void on_pushButton_confirmNewStaff_2_clicked();
 
+    void on_pushButton_EnterhighwayPic_clicked();
+
+    void on_pushButton_leaveHighwayPic_clicked();
+
+    void on_pushButton_confirmEnterHighwayPic_clicked();
+
+    void on_pushButton_confirmLeaveHighwayPic_clicked();
+
 private:
     Ui::SubClient *ui;
 

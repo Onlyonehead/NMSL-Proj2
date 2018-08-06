@@ -17,8 +17,22 @@ TEMPLATE = app
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
 
-INCLUDEPATH +=/usr/local/include
-LIBS +=-L/usr/local/lib -lopencv_imgproc -lopencv_core -lopencv_highgui -lopencv_imgcodecs -lopencv_ml
+unix{
+    INCLUDEPATH += /usr/local/include
+    LIBS += -L/usr/local/lib -lopencv_imgproc -lopencv_core -lopencv_highgui -lopencv_imgcodecs -lopencv_ml
+}
+
+win32{
+    INCLUDEPATH += D:\QTopencv\include\opencv\
+               D:\QTopencv\include\opencv2\
+               D:\QTopencv\include
+    LIBS += D:\QTopencv\lib\libopencv_core342.dll.a\
+            D:\QTopencv\lib\libopencv_highgui342.dll.a\
+            D:\QTopencv\lib\libopencv_imgcodecs342.dll.a\
+            D:\QTopencv\lib\libopencv_imgproc342.dll.a\
+            D:\QTopencv\lib\libopencv_ml342.dll.a\
+
+}
 
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.

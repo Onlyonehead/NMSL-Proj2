@@ -52,6 +52,10 @@
 #include <QListView>
 #include <QFileDialog>
 #include <QtCharts>
+#include <QTime>
+
+#include <qtmap.h>
+#include <hiredis/hiredis.h>
 
 #include "opencv2/opencv.hpp"
 #include "opencv2/core/core.hpp"
@@ -63,6 +67,7 @@
 using namespace cv;
 using namespace std;
 using namespace ml;
+using namespace QtCharts;
 
 namespace Ui {
 class MainClient;
@@ -150,8 +155,41 @@ private slots:
 
     void on_lineEdit_addNewEmail_editingFinished();
 
+    void on_pushButton_diaplayETCvehicles_clicked();
+
+    void on_pushButton_diaplayETCPayHistory_clicked();
+
+    void on_pushButton_rechargeBalance_clicked();
+
+    void on_pushButton_diaplayETCvehicleonroad_clicked();
+
+    void on_pushButton_diaplayVehiclesWA_clicked();
+
+    void on_pushButton_Charge_clicked();
+
+
+    void on_pushButton_ETCSearchAccount_clicked();
+
+    void on_pushButton_ETCplateDelete_clicked();
+
+    void on_pushButton_displayCamera_clicked();
+
+    void on_pushButton_clearCamera_clicked();
+
+    void on_button_right_clicked();
+
+    void on_button_left_clicked();
+
+    void on_tableWidget_left_itemClicked(QTableWidgetItem *item);
+
+    void on_tableWidget_right_itemClicked(QTableWidgetItem *item);
+
+    void on_pushButton_showmap_clicked();
+
 signals:
     void stringReturn(QString);
+
+    void webReturn(QVector<QStringList>);
 
 private:
     Ui::MainClient *ui;
@@ -168,6 +206,8 @@ private:
     void progressBar_fast();
     void progressBar();
 
+    QVector<QStringList> cameras;
+
     //for page_lpr1
     QVector<QStringList> lpr_history;
 
@@ -180,6 +220,15 @@ private:
     //for settings
     QVector<QStringList> userdata_settings;
 
+    //for page_statistics
+    QVector<QStringList> traffic;
+    QVector<QStringList> redlight;
+    QVector<QStringList> overspeed;
+    QString left;
+    QString right;
+    int set0_array[5];
+    int set1_array[5];
+    int set2_array[5];
 };
 
 #endif // MAINCLIENT_H

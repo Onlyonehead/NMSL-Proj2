@@ -25,6 +25,18 @@ MainClient::MainClient(QWidget *parent) :
     move(120,60);
     on_welcome_button_clicked();
 
+//    struct timeval timeout={2,0};
+
+//    redisContext* pRedisContext=(redisContext*)redisConnectWithTimeout("127.0.0.1",6379,timeout);
+
+//    const char* command("get key");
+
+//    redisReply* reply=(redisReply*)redisCommand(pRedisContext,command);
+
+//    QString str=reply->str;
+
+//    ui->textEdit->append(str);
+
 }
 
 MainClient::~MainClient()
@@ -197,6 +209,36 @@ void MainClient::showString(QString s1, QString s2, QString s3, QString s4, QStr
     ui->label_149->setText(QChar(0xf0e0));
     ui->label_149->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
 
+    ui->label_150->setFont(font);
+    ui->label_150->setText(QChar(0xf1de));
+    ui->label_150->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_151->setFont(font);
+    ui->label_151->setText(QChar(0xf06a));
+    ui->label_151->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_124->setFont(font);
+    ui->label_124->setText(QChar(0xf058));
+    ui->label_124->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_125->setFont(font);
+    ui->label_125->setText(QChar(0xf017));
+    ui->label_125->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_126->setFont(font);
+    ui->label_126->setText(QChar(0xf461));
+    ui->label_126->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->button_left->setFont(icon_search);
+    ui->button_left->setText(QChar(0xf359));
+    ui->button_left->setStyleSheet("QPushButton{border: 0px; color: rgb(106, 106, 106);background:none;}"
+                                    "QPushButton:hover{border: 0px; color: rgba(15, 128, 255, 190);} ");
+
+    ui->button_right->setFont(icon_search);
+    ui->button_right->setText(QChar(0xf35a));
+    ui->button_right->setStyleSheet("QPushButton{border: 0px; color: rgb(106, 106, 106);background:none;}"
+                                    "QPushButton:hover{border: 0px; color: rgba(15, 128, 255, 190);} ");
+
     style = false;
     QFile *file = new QFile(CONFIG_DIR);
     if(file->exists()){
@@ -267,6 +309,14 @@ void MainClient::showString(QString s1, QString s2, QString s3, QString s4, QStr
     ui->tableWidget_updateShowStaffInfo->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableWidget_updateShowStaffInfo->setAlternatingRowColors(true);
 
+    ui->tableWidget_left->horizontalHeader()->setStretchLastSection(true);
+    ui->tableWidget_left->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableWidget_left->setAlternatingRowColors(true);
+
+    ui->tableWidget_right->horizontalHeader()->setStretchLastSection(true);
+    ui->tableWidget_right->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableWidget_right->setAlternatingRowColors(true);
+
 
     file = new QFile(MODEL_DIR);
     if(file->exists()){
@@ -282,6 +332,59 @@ void MainClient::showString(QString s1, QString s2, QString s3, QString s4, QStr
         }
     }
     file->close();
+
+    QLineSeries *series=new QLineSeries;
+
+    QChart *chart=new QChart;
+    chart->setTitle("Traffic");
+    chart->addSeries(series);
+    chart->legend()->setAlignment(Qt::AlignBottom);
+    chart->createDefaultAxes();
+    chart->setAnimationOptions(QChart::SeriesAnimations);
+
+    QValueAxis *axisX = new QValueAxis;
+    axisX->setRange(0, 10);
+    axisX->setLabelFormat("%u");
+    axisX->setGridLineVisible(true);
+    axisX->setTickCount(10);
+    axisX->setMinorTickCount(3);
+
+    chart->setAxisX(axisX, series);
+
+    ui->chartView->setChart(chart);
+    ui->chartView->setRenderHint(QPainter::Antialiasing);
+
+    QBarSet *set0 = new QBarSet("Traffic");
+    QBarSet *set1 = new QBarSet("Redlight");
+    QBarSet *set2 = new QBarSet("Overspeed");
+
+    QPercentBarSeries *series2 = new QPercentBarSeries();
+    series2->append(set0);
+    series2->append(set1);
+    series2->append(set2);
+
+    QChart *chart2 = new QChart();
+    chart2->addSeries(series2);
+    chart2->setTitle("Offence Percentage");
+    chart->setAnimationOptions(QChart::SeriesAnimations);
+
+    QStringList categories;
+    categories << "1" << "2" << "3" << "4" << "5";
+    QBarCategoryAxis *axis2 = new QBarCategoryAxis();
+    axis2->append(categories);
+    chart2->createDefaultAxes();
+    chart2->setAxisX(axis2, series2);
+
+    chart2->legend()->setVisible(true);
+    chart2->legend()->setAlignment(Qt::AlignBottom);
+
+    ui->chartView_2->setChart(chart2);
+    ui->chartView_2->setRenderHint(QPainter::Antialiasing);
+
+
+    QStringList msg;
+    msg.append("transfer");
+    sendMessage(msg);
 }
 
 
@@ -656,4 +759,3 @@ bool MainClient::eventFilter(QObject *watched, QEvent *event) {
     }
     return QWidget::eventFilter(watched, event);
 }
-

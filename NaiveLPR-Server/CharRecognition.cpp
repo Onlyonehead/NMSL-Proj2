@@ -391,8 +391,6 @@ void CharRecognition::ANN_Train(string dir, int hiddenLayerNum, int iterNum,
                                 "L", "M", "N", "P", "Q", "R", "S", "T", "U", "V",
                                 "W", "X", "Y", "Z"};
 
-//    vector<float> feat;
-
     float trainingData[totalNum][DIM];
 
     float labels[totalNum][CLASS_NUM1];//训练样本标签
