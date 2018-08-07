@@ -134,7 +134,7 @@ QProgressBar {
          <rect>
           <x>40</x>
           <y>40</y>
-          <width>140</width>
+          <width>120</width>
           <height>30</height>
          </rect>
         </property>
@@ -162,7 +162,7 @@ QPushButton:hover{
        <widget class="QPushButton" name="pushButton_confirmNewStaff">
         <property name="geometry">
          <rect>
-          <x>200</x>
+          <x>190</x>
           <y>40</y>
           <width>120</width>
           <height>30</height>
@@ -246,7 +246,7 @@ QPushButton:hover{
 	background: rgba(248, 248, 248, 200);
 	border-image:none;
 	border-radius:7px;
-	border: 2px solid rgb(200, 200, 200);
+	border: 2px solid rgb(230, 230, 230);
 	color: rgb(76, 76, 76);
 	font: 75 15pt &quot;Helvetica&quot; bold;
 }</string>
@@ -390,7 +390,7 @@ QPushButton:hover{
 	background: rgba(248, 248, 248, 200);
 	border-image:none;
 	border-radius:7px;
-	border: 2px solid rgb(200, 200, 200);
+	border: 2px solid rgb(230, 230, 230);
 	color: rgb(76, 76, 76);
 	font: 15pt &quot;Times&quot; bold;
 }</string>
@@ -442,7 +442,7 @@ QPushButton:hover{
 	background: rgba(248, 248, 248, 200);
 	border-image:none;
 	border-radius:7px;
-	border: 2px solid rgb(200, 200, 200);
+	border: 2px solid rgb(230, 230, 230);
 	color: rgb(76, 76, 76);
 	font: 75 15pt &quot;Helvetica&quot; bold;
 }</string>
@@ -1188,6 +1188,9 @@ QDateTimeEdit::down-button:pressed{
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
+        </property>
+        <property name="displayFormat">
+         <string>yyyy-M-d h:mm AP</string>
         </property>
        </widget>
       </widget>

@@ -20,7 +20,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 unix{
     INCLUDEPATH += /usr/local/include
     LIBS += -L/usr/local/lib -lopencv_imgproc -lopencv_core -lopencv_highgui -lopencv_imgcodecs -lopencv_ml
-    LIBS += -L/usr/local/lib -lhiredis
+    LIBS += -L/usr/local/lib -lhiredis -lopencv_video -lopencv_videoio -lopencv_videostab
+
+
+    INCLUDEPATH +=  /usr/local/include
+    LIBS += -L/usr/local/lib -lavcodec \
+            -L/usr/local/lib -lavdevice \
+            -L/usr/local/lib -lavfilter \
+            -L/usr/local/lib -lavformat \
+            -L/usr/local/lib -lavutil \
+            -L/usr/local/lib -lpostproc \
+            -L/usr/local/lib -lswscale
 }
 
 win32{
@@ -59,7 +69,7 @@ SOURCES += main.cpp\
     myslider.cpp \
     paintlabel.cpp \
     videosurface.cpp \
-    page_offence.cpp
+    page_violation.cpp
 
 HEADERS  += mainclient.h \
     forgetpassword.h \

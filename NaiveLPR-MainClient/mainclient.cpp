@@ -79,6 +79,8 @@ void MainClient::showString(QString s1, QString s2, QString s3, QString s4, QStr
 
     ui->label_platePreview->installEventFilter(this);
 
+    ui->label_player_3->installEventFilter(this);
+
     ui->label_showEditPortrait->installEventFilter(this);
     ui->label_showEditPortrait->setAcceptDrops(true);
     ui->label_showEditPortraitPath->setVisible(false);
@@ -229,6 +231,22 @@ void MainClient::showString(QString s1, QString s2, QString s3, QString s4, QStr
     ui->label_126->setText(QChar(0xf461));
     ui->label_126->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
 
+    ui->label_16->setFont(font);
+    ui->label_16->setText(QChar(0xf008));
+    ui->label_16->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_22->setFont(font);
+    ui->label_22->setText(QChar(0xf101));
+    ui->label_22->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_31->setFont(font);
+    ui->label_31->setText(QChar(0xf192));
+    ui->label_31->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_27->setFont(font);
+    ui->label_27->setText(QChar(0xf058));
+    ui->label_27->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
     ui->icon_search->setFont(icon_search);
     ui->icon_search->setText(QChar(0xf35a));
     ui->icon_search->setStyleSheet("QPushButton{border: 0px; color: rgb(127, 127, 127);} "
@@ -329,6 +347,14 @@ void MainClient::showString(QString s1, QString s2, QString s3, QString s4, QStr
     ui->tableWidget_search->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableWidget_search->setAlternatingRowColors(true);
 
+    ui->tw_videos->installEventFilter(this);
+    ui->tw_videos->setAcceptDrops(true);
+    ui->tw_videos->horizontalHeader()->setDefaultSectionSize(10);
+    ui->tw_videos->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->tw_videos->horizontalHeader()->setStretchLastSection(true);
+    ui->tw_videos->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tw_videos->setAlternatingRowColors(true);
+
 
     file = new QFile(MODEL_DIR);
     if(file->exists()){
@@ -415,16 +441,11 @@ void MainClient::showString(QString s1, QString s2, QString s3, QString s4, QStr
     connect(ui->label_paint, SIGNAL(setPointEnd(QPoint)), this, SLOT(getPointEnd(QPoint)));
     connect(this, SIGNAL(clearP()), ui->label_paint, SLOT(painterClear()));
 
-    ui->tw_videos->installEventFilter(this);
-    ui->tw_videos->setAcceptDrops(true);
-    ui->tw_videos->verticalHeader()->setVisible(false);
-    ui->tw_videos->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
-    ui->pb_play->setEnabled(false);
-    ui->slider_progress->setEnabled(false);
-    connect(ui->slider_progress,&MySlider::mySliderClicked,this,&MainClient::slider_progress_clicked);
-    connect(ui->slider_progress,&MySlider::sliderMoved,this,&MainClient::slider_progress_moved);
-    connect(ui->slider_progress,&MySlider::sliderReleased,this,&MainClient::slider_progress_released);
+    ui->pb_play_3->setEnabled(false);
+    ui->slider_progress_3->setEnabled(false);
+    connect(ui->slider_progress_3,&MySlider::mySliderClicked,this,&MainClient::slider_progress_clicked);
+    connect(ui->slider_progress_3,&MySlider::sliderMoved,this,&MainClient::slider_progress_moved);
+    connect(ui->slider_progress_3,&MySlider::sliderReleased,this,&MainClient::slider_progress_released);
 }
 
 
@@ -798,7 +819,7 @@ bool MainClient::eventFilter(QObject *watched, QEvent *event) {
         }
     }
 
-    if(target == ui->tw_videos){
+    if(watched == ui->tw_videos){
         if(event->type() == QEvent::DragEnter){
             QDragEnterEvent *dEE = static_cast<QDragEnterEvent*>(event);
 
@@ -820,6 +841,7 @@ bool MainClient::eventFilter(QObject *watched, QEvent *event) {
             //窗口部件放下一个对象时,调用该函数
             const QMimeData *qm=dE->mimeData();//获取MIMEData
             QString path = qm->urls()[0].toLocalFile();
+
             QStringList splits = path.split("/");
             QString fileName = splits.at(splits.size()-1);
 
@@ -838,7 +860,66 @@ bool MainClient::eventFilter(QObject *watched, QEvent *event) {
             }
             return true;
         }
+
     }
 
+    if(watched == ui->label_player_3){
+        if(event->type() == QEvent::MouseButtonDblClick){
+            //选择视频文件
+            QString filename = QFileDialog::getOpenFileName(this,tr("选择视频文件"),"/Users/Haibara/Desktop",tr("视频格式(*.mp4)"));
+            qDebug() << filename;
+            QFile file(filename);
+            if(!file.open(QIODevice::ReadOnly))
+            {
+                QMessageBox::information(NULL, "Title", "Content", QMessageBox::Ok, QMessageBox::Ok);
+                return true;
+            }
+            if(if_reload)
+            {//重新加载视频时，重置以下变量
+                delete layout_video;
+                delete player;
+                delete timer;
+            }
+            if_reload = true;
+
+            //实例化三个全局变量
+            layout_video = new QVBoxLayout;
+            player = new QMediaPlayer;
+            QVideoWidget *widget = new QVideoWidget;
+            //设置视频播放区域与Label的边距
+            layout_video->setMargin(1);
+            //根据label_player尺寸设置播放区域
+            widget->resize(ui->label_player_3->size());
+            layout_video->addWidget(widget);
+            ui->label_player_3->setLayout(layout_video);
+            player->setVideoOutput(widget);
+
+            //设置播放器
+            player->setMedia(QMediaContent(QUrl::fromLocalFile(filename)));
+
+
+
+            //play_state为true表示播放，false表示暂停
+            play_state = true;
+            //启用播放/暂停按钮，并将其文本设置为“暂停”
+            ui->pb_play_3->setEnabled(true);
+            ui->pb_play_3->setText("pause");
+            //播放器开启
+            player->play();
+
+            //启用进度条
+            ui->slider_progress_3->setEnabled(true);
+            ui->slider_progress_3->setRange(0,maxValue);
+
+            timer = new QTimer();
+            timer->setInterval(100);//如果想看起来流畅些，可以把时间间隔调小，如100ms
+            timer->start();
+            //将timer连接至onTimerOut槽函数
+            connect(timer, SIGNAL(timeout()), this, SLOT(onTimerOut()));
+
+            return true;
+        }
+
+    }
     return QWidget::eventFilter(watched, event);
 }

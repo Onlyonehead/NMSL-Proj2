@@ -7,6 +7,8 @@
 
 #define MODEL_DIR "/Users/Haibara/Documents/qt build files2/Clientfiles/model.data"
 
+#define V_DIR "/Users/Haibara/Documents/qt build files2/Clientfiles/videos"
+
 #include <QMainWindow>
 
 #include <QFont>
@@ -66,6 +68,7 @@
 
 #include <qtmap.h>
 #include <hiredis/hiredis.h>
+#include "VideoDetect.h"
 
 #include "opencv2/opencv.hpp"
 #include "opencv2/core/core.hpp"
@@ -102,7 +105,6 @@ public slots:
     void slider_progress_clicked();
     void slider_progress_moved();
     void slider_progress_released();
-    void ProcessFrame(QVideoFrame&);
 
 private slots:
 
@@ -196,6 +198,7 @@ private slots:
 
     void on_pushButton_11_clicked();
 
+
     void on_pb_sendRequest_clicked();
 
     void on_pb_selectVideos_clicked();
@@ -204,15 +207,9 @@ private slots:
 
     void on_tw_videos_cellClicked(int row, int column);
 
-    void on_pb_open_clicked();
-
-    void on_pb_play_clicked();
-
-    void on_pb_deselectVideo_clicked();
+    void on_pb_play_3_clicked();
 
     void on_pushButton_clicked();
-
-    void on_pb_sendRequest_clicked();
 
     void on_horizontalSlider_up_valueChanged(int value);
 
@@ -227,6 +224,10 @@ signals:
 
 private:
     void showSelectedTime();
+
+    void SplitString(const string& s, vector<string>& v, const string& c);
+
+    bool removeFolderContent(const QString &folderDir);
 
 private:
     Ui::MainClient *ui;

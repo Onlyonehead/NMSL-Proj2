@@ -7,12 +7,10 @@
 
 #include <cstring>
 #include <iostream>
-#include <cvaux.h>
-#include <cv.h>
-#include <cxcore.h>
-#include <highgui.h>
-#include "cv.h"
-#include "highgui.h"
+#include <opencv/cvaux.h>
+#include <opencv/cv.h>
+#include <opencv/cxcore.h>
+#include <opencv/highgui.h>
 #include "opencv2/opencv.hpp"
 #include <vector>
 #include <stack>
@@ -65,10 +63,10 @@ public:
      * @param shadow shadow threshold
      * @param mCore size of structuring element of close operation
      */
-    void vOperate_flow(string *path, double *rat, int minarea=350, int mindetect=800,
+    int vOperate_flow(string *path, double *rat, int minarea=350, int mindetect=800,
             int initFrame=30, int fMax=10, double shadow=0.7, int mCore=6);
 
-    void vOperatePeccancy(string *path, double *rat, long *time, int minarea=350, int mindetect=800,
+    int vOperatePeccancy(string *path, double *rat, long *time, int minarea=350, int mindetect=800,
                           int initFrame=30, int fMax=10, double shadow=0.7, int mCore=6);
 
     bool peccancyDetect(Rect& r, int *line);

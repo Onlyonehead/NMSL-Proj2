@@ -155,6 +155,7 @@ void VideoDetect::getFirstFrame(string videoPath, Mat &fFrame)
     {
         return;
     }
+    capture.release();
 }
 
 bool fullInclude(Rect& r, Rect& roi){
@@ -191,7 +192,7 @@ bool VideoDetect::peccancyDetect(Rect &r, int* line) {
     return result;
 }
 
-void VideoDetect::vOperate_flow(string *path, double *rat, int minarea, int mindetect,
+int VideoDetect::vOperate_flow(string *path, double *rat, int minarea, int mindetect,
                                 int initFrame, int fMax, double shadow, int mCore)
 {
     string videoPath = path[0];
@@ -209,7 +210,7 @@ void VideoDetect::vOperate_flow(string *path, double *rat, int minarea, int mind
     VideoCapture capture(videoPath);
     if (!capture.isOpened())
     {
-        return;
+        return -1;
     }
 
     VideoWriter writer=VideoWriter(path[1],//输出路径以及文件名
@@ -222,7 +223,7 @@ void VideoDetect::vOperate_flow(string *path, double *rat, int minarea, int mind
     );
 
     if(!writer.isOpened())
-        return;
+        return -1;
 
     // 混合高斯物体
     Ptr<BackgroundSubtractorMOG2> bgsubtractor = createBackgroundSubtractorMOG2();
@@ -481,9 +482,11 @@ void VideoDetect::vOperate_flow(string *path, double *rat, int minarea, int mind
     }
     bgsubtractor->getBackgroundImage(background);
     imwrite(path[4], background);
+
+    return carCount;
 }
 
-void VideoDetect::vOperatePeccancy(string *path, double *rat, long *time, int minarea, int mindetect,
+int VideoDetect::vOperatePeccancy(string *path, double *rat, long *time, int minarea, int mindetect,
                                    int initFrame, int fMax, double shadow, int mCore)
 {
     string videoPath = path[0];
@@ -497,11 +500,10 @@ void VideoDetect::vOperatePeccancy(string *path, double *rat, long *time, int mi
     Mat frame, blu;
     Mat foreground, background;        // 前景图片
 
-//    VideoCapture capture("/home/chenchang/Documents/cc/1.0/vtest.avi");
     VideoCapture capture(videoPath);
     if (!capture.isOpened())
     {
-        return;
+        return -1;
     }
 
     double spf = 1/capture.get(CV_CAP_PROP_FPS)*1000;
@@ -509,7 +511,6 @@ void VideoDetect::vOperatePeccancy(string *path, double *rat, long *time, int mi
 
     VideoWriter writer=VideoWriter(path[1],//输出路径以及文件名
                                    CV_FOURCC('D', 'I', 'V', 'X'),//根据输入视频得到其编解码器
-//                                   CV_FOURCC('U', '2', '6', '3'),//根据输入视频得到其编解码器
                                    (int)capture.get(CV_CAP_PROP_FPS),//根据输入视频得到帧率
                                    Size((int)capture.get( CV_CAP_PROP_FRAME_WIDTH ),//根据输入视频得到视频宽度
                                         (int)capture.get(CV_CAP_PROP_FRAME_HEIGHT)),//根据输入视频得到视频高度
@@ -517,7 +518,7 @@ void VideoDetect::vOperatePeccancy(string *path, double *rat, long *time, int mi
     );
 
     if(!writer.isOpened())
-        return;
+        return -1;
 
     // 混合高斯物体
     Ptr<BackgroundSubtractorMOG2> bgsubtractor = createBackgroundSubtractorMOG2();
@@ -758,4 +759,6 @@ void VideoDetect::vOperatePeccancy(string *path, double *rat, long *time, int mi
     }
     bgsubtractor->getBackgroundImage(background);
     imwrite(path[3], background);
+
+    return carCount;
 }
