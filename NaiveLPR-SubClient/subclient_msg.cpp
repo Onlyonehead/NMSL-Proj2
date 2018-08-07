@@ -118,7 +118,7 @@ void SubClient::readMessage()
             }
 
             ui->stackedWidget->setCurrentIndex(0);
-
+            ui->stackedWidget_3->setCurrentIndex(0);
 
             ui->label_2->setText(list.at(0));
             ui->label_4->setText(list.at(1));
@@ -159,6 +159,7 @@ void SubClient::readMessage()
             delete pixmap;
 
             ui->stackedWidget_2->setVisible(true);
+            ui->stackedWidget_2->setCurrentIndex(0);
 
 
             QApplication::processEvents();
@@ -186,7 +187,7 @@ void SubClient::readMessage()
                 QApplication::processEvents();
             }
 
-            ui->stackedWidget->setCurrentIndex(0);
+            ui->stackedWidget->setCurrentIndex(1);
 
 
             ui->label_2->setText(list.at(0));
@@ -195,12 +196,13 @@ void SubClient::readMessage()
             ui->label_12->setText(list.at(3));
             ui->label_14->setText(list.at(4));
 
-            ui->frame->setStyleSheet("QFrame{background: rgba(0, 0, 0, 100);}");
+            ui->frame->setStyleSheet("QFrame{background: rgba(255, 255, 255, 100);"
+                                     "border: 2px solid rgb(160, 160, 160);}");
 
             ui->frame_2->setStyleSheet("QFrame{"
                                        "background: rgba(248, 248, 248, 220);"
                                        "border-image:none;"
-                                       "border: 2px solid rgb(200, 200, 200);}");
+                                       "border: 2px solid rgb(220, 220, 220);}");
 
 
             QPixmap *pixmap = new QPixmap(DIR + QString("/users/") + list.at(5));
@@ -220,7 +222,7 @@ void SubClient::readMessage()
             delete pixmap;
 
             ui->stackedWidget_2->setVisible(true);
-
+            ui->stackedWidget_2->setCurrentIndex(0);
 
             QApplication::processEvents();
 
@@ -269,95 +271,32 @@ void SubClient::readMessage()
         ui->label_showPlate->show();
         progressBar();
     }
-    //ETCpage send enter_highway_image
-    if(from == "ETCp_sendEnterPic"){
-        QString plateName;
-        in >> plateName;
 
-        if(plateName == "FAIL"){
-            QMessageBox::warning(this, "warning", "\n未检测到车牌", QMessageBox::Close);
-            ui->label_vehicleFromPic->clear();
-            ui->label_vehicleFromPic->setVisible(false);
-            return;
-        }else {
-            QMessageBox::information(this, "information", "\n上传成功！", QMessageBox::Ok);
+    if(from == "camera_search"){
+        QSet<QString> set;
+        in >> set;
+
+        QVector<QStringList> vlist;
+        in >> vlist;
+        this->camera_search = vlist;
+
+        int count = 0;
+        for(QString s : set){
+            ui->tableWidget_search->insertRow(count);
+            ui->tableWidget_search->setItem(count, 0, new QTableWidgetItem("Camera ID: " + s));
+            count++;
         }
-
-        QString plate;
-        in >> plate;
-
-        bool isPLateETCAvailable;
-        in >> isPLateETCAvailable;
-
-        if(isPLateETCAvailable == false){
-            QMessageBox::warning(this, "Warning", "\n此车辆未办理ETC服务，请走人工通道", QMessageBox::Close);
-        }
-    }
-    //ETC page send leave_highway_pic
-    if(from == "ETCp_sendLeavePic"){
-        QString plateName;
-        in >> plateName;
-
-        if(plateName == "FAIL"){
-            QMessageBox::warning(this, "warning", "\n未检测到车牌", QMessageBox::Close);
-            ui->label_vehicleTarPic->clear();
-            ui->label_vehicleTarPic->setVisible(false);
-            return;
-        }else {
-            QMessageBox::information(this, "information", "\n上传成功!", QMessageBox::Ok);
-        }
-
-        QString plate;
-        in >> plate;
-
-
-    }
-    //ETCpage send enter_highway_image
-    if(from == "ETCp_sendEnterPic"){
-        QString plateName;
-        in >> plateName;
-
-        if(plateName == "FAIL"){
-            QMessageBox::warning(this, "warning", "\n未检测到车牌", QMessageBox::Close);
-            ui->label_vehicleFromPic->clear();
-            ui->label_vehicleFromPic->setVisible(false);
-            return;
-        }else {
-            QMessageBox::information(this, "information", "\n上传成功！", QMessageBox::Ok);
-        }
-
-        QString plate;
-        in >> plate;
-
-        bool isPLateETCAvailable;
-        in >> isPLateETCAvailable;
-
-        if(isPLateETCAvailable == false){
-            QMessageBox::warning(this, "Warning", "\n此车辆未办理ETC服务，请走人工通道", QMessageBox::Close);
-        }
-    }
-    //ETC page send leave_highway_pic
-    if(from == "ETCp_sendLeavePic"){
-        QString plateName;
-        in >> plateName;
-
-        if(plateName == "FAIL"){
-            QMessageBox::warning(this, "warning", "\n未检测到车牌", QMessageBox::Close);
-            ui->label_vehicleTarPic->clear();
-            ui->label_vehicleTarPic->setVisible(false);
-            return;
-        }else {
-            QMessageBox::information(this, "information", "\n上传成功!", QMessageBox::Ok);
-        }
-
-        QString plate;
-        in >> plate;
-
+        ui->tableWidget_search->setRowCount(count);
 
     }
 
+    if(from == "ETC"){
+        QString msg;
+        in >> msg;
+        if(msg == "Done"){
+            QMessageBox::information(this,"提示", "\n上传成功！",QMessageBox::Ok);
+            on_pushButton_clear_clicked();
+        }
+    }
 
-
-
-//    m_tcpsocket->disconnectFromHost();
 }

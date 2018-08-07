@@ -53,6 +53,16 @@
 #include <QFileDialog>
 #include <QtCharts>
 #include <QTime>
+#include <QMap>
+#include <QScrollArea>
+#include <QMediaPlayer>
+#include <QVBoxLayout>
+#include <QVideoWidget>
+#include <QFileDialog>
+#include <QFile>
+#include <QMessageBox>
+#include <QTimer>
+#include <QVideoFrame>
 
 #include <qtmap.h>
 #include <hiredis/hiredis.h>
@@ -84,6 +94,15 @@ public:
     void download(const QString &url, const QString &filePath);
 //    void transfer();
 //    bool eventFilter(QObject *watched, QEvent *event);
+
+public slots:
+    void getPointStart(QPoint);
+    void getPointEnd(QPoint);
+    void onTimerOut();
+    void slider_progress_clicked();
+    void slider_progress_moved();
+    void slider_progress_released();
+    void ProcessFrame(QVideoFrame&);
 
 private slots:
 
@@ -155,23 +174,6 @@ private slots:
 
     void on_lineEdit_addNewEmail_editingFinished();
 
-    void on_pushButton_diaplayETCvehicles_clicked();
-
-    void on_pushButton_diaplayETCPayHistory_clicked();
-
-    void on_pushButton_rechargeBalance_clicked();
-
-    void on_pushButton_diaplayETCvehicleonroad_clicked();
-
-    void on_pushButton_diaplayVehiclesWA_clicked();
-
-    void on_pushButton_Charge_clicked();
-
-
-    void on_pushButton_ETCSearchAccount_clicked();
-
-    void on_pushButton_ETCplateDelete_clicked();
-
     void on_pushButton_displayCamera_clicked();
 
     void on_pushButton_clearCamera_clicked();
@@ -186,10 +188,45 @@ private slots:
 
     void on_pushButton_showmap_clicked();
 
+    void on_icon_search_clicked();
+
+    void on_tableWidget_search_itemClicked(QTableWidgetItem *item);
+
+    void on_pushButton_12_clicked();
+
+    void on_pushButton_11_clicked();
+
+    void on_pb_sendRequest_clicked();
+
+    void on_pb_selectVideos_clicked();
+
+    void on_pb_clearRect_clicked();
+
+    void on_tw_videos_cellClicked(int row, int column);
+
+    void on_pb_open_clicked();
+
+    void on_pb_play_clicked();
+
+    void on_pb_deselectVideo_clicked();
+
+    void on_pushButton_clicked();
+
+    void on_pb_sendRequest_clicked();
+
+    void on_horizontalSlider_up_valueChanged(int value);
+
+    void on_horizontalSlider_down_valueChanged(int value);
+
 signals:
     void stringReturn(QString);
 
     void webReturn(QVector<QStringList>);
+
+    void clearP();
+
+private:
+    void showSelectedTime();
 
 private:
     Ui::MainClient *ui;
@@ -217,6 +254,8 @@ private:
     //for page_lpr2
     QString dirForImage;
 
+    QVector<QStringList> lpr_search;
+
     //for settings
     QVector<QStringList> userdata_settings;
 
@@ -229,6 +268,25 @@ private:
     int set0_array[5];
     int set1_array[5];
     int set2_array[5];
+
+    //for page_offence
+
+    QMap<QString, QString> qm_videos;
+    QPoint pStart, pEnd;
+    QScrollArea *scrollArea;
+
+    QVBoxLayout* layout_video;  //布局
+    QMediaPlayer* player;   //播放器
+    QVideoWidget* widget;   //视频播放控件
+    QTimer * timer;
+    int maxValue = 1000;
+    bool play_state;    //播放状态，true为播放，false为暂停
+    bool if_reload=false;   //是否重新载入视频
+
+    QMediaPlayer *indexPlayer;//用于提取视频第一帧
+    int video_width, video_height;
+    bool if_index=false;
+    qint64 duration;//视频时长
 };
 
 #endif // MAINCLIENT_H

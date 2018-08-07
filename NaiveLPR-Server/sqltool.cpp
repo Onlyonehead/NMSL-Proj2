@@ -210,7 +210,6 @@ void SQLTool::search(QSqlQuery &query, QString s1, QString s2, QString s3){
  */
 void SQLTool::search(QSqlQuery &query, QString s, QStringList list){
     QString sql = "select * from "+ s +" where ";
-    query.exec(sql);
 
     int n = list.size();
     while(n){
@@ -222,6 +221,8 @@ void SQLTool::search(QSqlQuery &query, QString s, QStringList list){
         }
         n -= 2;
     }
+
+    query.exec(sql);
 
     if(!query.isActive()){
         qDebug()  << "fail to exec:  ";
@@ -464,7 +465,7 @@ void SQLTool::update(QString s1, QString s2, QString s3, QStringList list){
  * @param s table name
  * @param list values
  */
-void SQLTool::insert(QString s, QStringList list){
+void SQLTool::insert(QString s, QStringList list, int nullcount){
     QSqlQuery query;
     int n = list.size();
     QString sql;
@@ -474,8 +475,18 @@ void SQLTool::insert(QString s, QStringList list){
         if(i != n-1){
             sql += "', '";
         }else{
-            sql += "')";
+            if(nullcount == 0){
+                sql += "')";
+            }else{
+                sql += "', ";
+            }
         }
+    }
+    for(int i = 0; i < nullcount-1; i++){
+        sql += "null,";
+    }
+    if(nullcount > 0){
+        sql += "null)";
     }
     query.exec(sql);
 

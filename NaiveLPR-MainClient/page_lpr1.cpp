@@ -12,7 +12,13 @@ void MainClient::on_pushButton_3_clicked()
 
 void MainClient::on_pushButton_clearHistory_clicked()
 {
+    ui->lineEdit_Hlayer->setText("65");
+    ui->lineEdit_iter->setText("5000");
+    ui->lineEdit_threshold->setText("1e-4");
+    ui->tableWidget_search->setRowCount(0);
+    ui->scrollArea->setWidget(new QWidget());
     ui->tableWidget_history->setRowCount(0);
+    ui->search_A->clear();
     ui->label_platePreview->setText("Preview");
     ui->comboBox_selectType->setCurrentIndex(0);
     this->processPhase = 0;

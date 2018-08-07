@@ -41,6 +41,8 @@
 #include <QTime>
 #include <QDate>
 #include <QFileDialog>
+#include <QWebChannel>
+#include "bridge.h"
 
 #define DIR "/Users/Haibara/Documents/qt build files2/Clientfiles"
 
@@ -65,7 +67,7 @@ private slots:
 
     void replyFinished();
 
-    void on_pushButton_switch_2_clicked();
+    void on_pushButton_login_clicked();
 
     void sendMessage(QStringList);
 
@@ -83,16 +85,42 @@ private slots:
 
     void on_pushButton_confirmNewStaff_2_clicked();
 
-    void on_pushButton_EnterhighwayPic_clicked();
+    void on_pushButton_B_clicked();
 
-    void on_pushButton_leaveHighwayPic_clicked();
+    void on_pushButton_A_clicked();
 
-    void on_pushButton_confirmEnterHighwayPic_clicked();
+    void on_pushButton_switch_3_clicked();
 
-    void on_pushButton_confirmLeaveHighwayPic_clicked();
+    void on_pushButton_quit_3_clicked();
+
+    void on_pushButton_A_2_clicked();
+
+    void on_pushButton_B_2_clicked();
+
+    void slotSendDataToH5(bool ok);
+
+    void on_icon_search_clicked();
+
+    void on_tableWidget_search_itemClicked(QTableWidgetItem *item);
+
+    void on_pushButton_set1_clicked();
+
+    void on_pushButton_set2_clicked();
+
+    void on_pushButton_clear_clicked();
+
+    void on_pushButton_confirm_clicked();
 
 private:
     Ui::SubClient *ui;
+
+    Bridge bridge;
+
+    QString url;
+
+    QStringList position;
+
+    QVector<QStringList> camera_search;
 
     QNetworkAccessManager netManager;
     QString filepath;

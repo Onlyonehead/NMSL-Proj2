@@ -49,6 +49,8 @@ void MainClient::readMessage()
         in >> count0;
         in >> count1;
 
+        ui->progressBar->setValue(40);
+
         QVector<QStringList> c;
         in >> c;
         this->cameras = c;
@@ -58,6 +60,8 @@ void MainClient::readMessage()
         series3->append("User", count0);
         series3->append("Camera", count1);
 
+        ui->progressBar->setValue(50);
+
         QChart *chart3 = new QChart;
         chart3->setTitle("Resource Type");
         chart3->addSeries(series3);
@@ -66,6 +70,29 @@ void MainClient::readMessage()
         chart3->setTheme(QChart::ChartThemeBrownSand);
         ui->chartView_3->setChart(chart3);
         ui->chartView_3->setRenderHint(QPainter::Antialiasing);
+
+        ui->progressBar->setValue(60);
+
+        QStringList wordlist;
+        in >> wordlist;
+        QApplication::processEvents();
+        QCompleter *completer = new QCompleter(this);
+        QStringListModel *string_list_model = new QStringListModel(wordlist, this);
+
+        ui->progressBar->setValue(70);
+
+        completer->setCaseSensitivity(Qt::CaseInsensitive);
+        completer->setModel(string_list_model);
+        completer->popup()->setStyleSheet("border: 2px solid rgb(169, 169, 169);border-radius:0px;"
+                                          "background:rgba(255, 255, 255,200);"
+                                          "color: rgb(76, 76, 76);"
+                                          "font: 17pt \"Times\" bold;");
+        ui->search_A->setCompleter(completer);
+
+        ui->progressBar->setValue(80);
+        ui->progressBar->setValue(90);
+        ui->progressBar->setValue(100);
+        ui->progressBar->setVisible(false);
     }
 
     if(from == "lpr_history"){
@@ -260,75 +287,22 @@ void MainClient::readMessage()
         ui->tableWidget_left->setRowCount(count);
     }
 
-    //main client ETC page display all on road vehicles
-       if(from == "mc_ETCp_displayOnRoadVehicles"){
-           ui->tableWidget_displayETCvehicleInfo->clear();
-           QVector<QStringList> result;
-           in >> result;
-           int i = 0;
-           for(QStringList list : result){
-               ui->tableWidget_displayETCvehicleInfo->insertRow(i);
-               ui->tableWidget_displayETCvehicleInfo->setItem(i, 0, new QTableWidgetItem(list.at(0)));
-               ui->tableWidget_displayETCvehicleInfo->setItem(i, 1, new QTableWidgetItem(list.at(1)));
-               i++;
-           }
-           ui->tableWidget_displayETCvehicleInfo->setRowCount(i);
-           progressBar();
-       }
-       //main client display all pay history
-           if(from == "mc_ETCp_displayPayHistory"){
-               ui->tableWidget_displayETCPayHistory->clear();
-               QVector<QStringList> result;
-               in >> result;
-               int i = 0;
-               for(QStringList list : result){
-                   ui->tableWidget_displayETCPayHistory->insertRow(i);
-                   ui->tableWidget_displayETCPayHistory->setItem(i, 0, new QTableWidgetItem(list.at(0)));
-                   ui->tableWidget_displayETCPayHistory->setItem(i, 1, new QTableWidgetItem(list.at(1)));
-                   ui->tableWidget_displayETCPayHistory->setItem(i, 2, new QTableWidgetItem(list.at(2)));
-                   i++;
-               }
-               ui->tableWidget_displayETCPayHistory->setRowCount(i);
-               progressBar();
-           }
-           //main client ETC page recharge
-           if(from == "mc_recharge"){
-               QMessageBox::information(this, tr("information"), tr("\n充值成功！"), QMessageBox::Yes, QMessageBox::Yes);
-           }
-           //main client ETC page display vehicle wit arrears
-           if(from == "mc_displayVehiclesWA"){
-               ui->tableWidget_displayETCvehicleInfo->clear();
-               QVector<QStringList> result;
-               in >> result;
-               int i = 0;
-               for(QStringList list : result){
-                   ui->tableWidget_displayETCvehicleInfo->insertRow(i);
-                   ui->tableWidget_displayETCvehicleInfo->setItem(i, 0, new QTableWidgetItem(list.at(0)));
-                   ui->tableWidget_displayETCvehicleInfo->setItem(i, 1, new QTableWidgetItem(list.at(1)));
-                   i++;
-               }
-               ui->tableWidget_displayETCvehicleInfo->setRowCount(i);
-               progressBar();
-           }
-           //main client search plates
-           if(from == "mc_ETCp_searchPlate"){
-               ui->tableWidget_displayETCvehicleInfo->clear();
-               QVector<QStringList> result;
-               in >> result;
-               int i = 0;
-               for(QStringList list : result){
-                   ui->tableWidget_displayETCvehicleInfo->insertRow(i);
-                   ui->tableWidget_displayETCvehicleInfo->setItem(i, 0, new QTableWidgetItem(list.at(0)));
-                   ui->tableWidget_displayETCvehicleInfo->setItem(i, 0, new QTableWidgetItem(list.at(1)));
-                   i++;
-               }
-               ui->tableWidget_displayETCvehicleInfo->setRowCount(i);
-               progressBar();
-           }
-           //main client delete plate
-           if(from == "mc_DeletePlate"){
-               QMessageBox::information(this, tr("information"), tr("\n删除成功"), QMessageBox::Close, QMessageBox::Close);
-           }
+    if(from == "lpr_search"){
+        QSet<QString> set;
+        in >> set;
 
+        QVector<QStringList> vlist;
+        in >> vlist;
+        this->lpr_search = vlist;
+
+        int count = 0;
+        for(QString s : set){
+            ui->tableWidget_search->insertRow(count);
+            ui->tableWidget_search->setItem(count, 0, new QTableWidgetItem(s));
+            count++;
+        }
+        ui->tableWidget_search->setRowCount(count);
+
+    }
 
 }

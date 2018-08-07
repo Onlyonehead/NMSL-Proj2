@@ -144,7 +144,7 @@ void MainClient::on_button_right_clicked()
             cam_date.setDate(year, month, day);
             int count;
             count = (int)cam_date.daysTo(current_date);
-            if(count <= 10){
+            if(count <= 10 && count >=0){
                 map.insert(count, list.at(2).toInt());
             }
         }
@@ -162,7 +162,7 @@ void MainClient::on_button_right_clicked()
             cam_date.setDate(year, month, day);
             int count;
             count = (int)cam_date.daysTo(current_date);
-            if(count <= 4){
+            if(count <= 4 && count >=0){
                 map2.insert(count, list.at(2).toInt());
             }
         }
@@ -180,7 +180,7 @@ void MainClient::on_button_right_clicked()
             cam_date.setDate(year, month, day);
             int count;
             count = (int)cam_date.daysTo(current_date);
-            if(count <= 4){
+            if(count <= 4 && count >=0){
                 map3.insert(count, list.at(2).toInt());
             }
         }
@@ -286,6 +286,12 @@ void MainClient::on_button_left_clicked()
 
     if(ui->tableWidget_right->rowCount() == 0){
 
+        for(int i = 0; i < 5; i++){
+            set0_array[i] = 0;
+            set1_array[i] = 0;
+            set2_array[i] = 0;
+        }
+
         ui->label_traffic->setText(QString::number(0));
         ui->label_redlight->setText(QString::number(0));
         ui->label_overspeed->setText(QString::number(0));
@@ -362,7 +368,7 @@ void MainClient::on_button_left_clicked()
             cam_date.setDate(year, month, day);
             int count;
             count = (int)cam_date.daysTo(current_date);
-            if(count <= 4){
+            if(count <= 4 && count >=0){
                 map.insert(count, list.at(2).toInt());
             }
         }
@@ -380,7 +386,7 @@ void MainClient::on_button_left_clicked()
             cam_date.setDate(year, month, day);
             int count;
             count = (int)cam_date.daysTo(current_date);
-            if(count <= 4){
+            if(count <= 4 && count >=0){
                 map2.insert(count, list.at(2).toInt());
             }
         }
@@ -398,7 +404,7 @@ void MainClient::on_button_left_clicked()
             cam_date.setDate(year, month, day);
             int count;
             count = (int)cam_date.daysTo(current_date);
-            if(count <= 4){
+            if(count <= 4 && count >=0){
                 map3.insert(count, list.at(2).toInt());
             }
         }

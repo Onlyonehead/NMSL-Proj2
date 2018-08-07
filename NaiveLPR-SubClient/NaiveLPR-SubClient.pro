@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network sql
+QT       += core gui network sql webengine webenginewidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -25,9 +25,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         subclient.cpp \
-    subclient_msg.cpp
+    subclient_msg.cpp \
+    bridge.cpp \
+    analogclock.cpp
 
-HEADERS  += subclient.h
+HEADERS  += subclient.h \
+    bridge.h \
+    analogclock.h
 
 FORMS    += subclient.ui
 

@@ -16,14 +16,14 @@ int main(int argc, char *argv[])
 //    for(int i = 1; i < 15; i++){
 //        qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
 //        QDate current_date = QDate::currentDate();
-//        for(int j = 0; j < 13; j++){
-//            int num = 0 + qrand() % (10 - 0);
-//            QString date = current_date.addDays(-j).toString("yyyy-MM-dd");
+//        for(int j = -13; j < 13; j++){
+//            int num = 50 + qrand() % (550 - 50);
+//            QString date = current_date.addDays(j).toString("yyyy-MM-dd");
 //            QStringList list;
 //            list.append(QString::number(i));
 //            list.append(date);
 //            list.append(QString::number(num));
-//            SQLTool::insert("overspeed", list);
+//            SQLTool::insert("traffic_flow", list);
 //        }
 //    }
 

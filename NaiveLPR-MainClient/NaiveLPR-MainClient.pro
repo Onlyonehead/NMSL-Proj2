@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network sql charts webengine webenginewidgets
+QT       += core gui network sql charts webengine webenginewidgets multimedia multimediawidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -53,14 +53,25 @@ SOURCES += main.cpp\
     page_settings.cpp \
     page_etc.cpp \
     qtmap.cpp \
-    bridge.cpp
+    bridge.cpp \
+    Tools.cpp \
+    VideoDetect.cpp \
+    myslider.cpp \
+    paintlabel.cpp \
+    videosurface.cpp \
+    page_offence.cpp
 
 HEADERS  += mainclient.h \
     forgetpassword.h \
     login.h \
     CharRecognition.h \
     qtmap.h \
-    bridge.h
+    bridge.h \
+    Tools.h \
+    VideoDetect.h \
+    myslider.h \
+    paintlabel.h \
+    videosurface.h
 
 FORMS    += mainclient.ui \
     forgetpassword.ui \

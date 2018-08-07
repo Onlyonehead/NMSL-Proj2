@@ -68,7 +68,7 @@ public:
     static void update(QString, QString, QString, QStringList);
 
     //E.g : "insert into userdata valuses ('koushizon','123','杭咨存','男','管理员','koushizon@outlook.com')"
-    static void insert(QString, QStringList);
+    static void insert(QString s, QStringList list, int nullcount = 0);
 
     //E.g : "reset self-increase attributes in TABLE_NAME as n"
     static void reset(QString, int);
