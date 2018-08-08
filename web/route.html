@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>显示送货路线</title>
+    <script src="./qwebchannel.js"></script>
+    <link rel="stylesheet" href="https://cache.amap.com/lbs/static/main.css"/>
+<script type="text/javascript" src='https://webapi.amap.com/maps?v=1.4.8&key=6b0237d295dd9898cc5ffca0a316df67&plugin=AMap.TruckDriving'></script> 
+    <style type="text/css">
+        #panel{
+            position: fixed;
+            background-color: white;
+            max-height: 97%;
+            overflow-y: auto;
+            top: 10px;
+            right: 10px;
+            width: 280px;
+        }
+    </style>
+</head>
+<body>
+<div id="mapContainer"></div>
+<div id="panel"></div>
+<script type="text/javascript">
+    new QWebChannel(qt.webChannelTransport, function(channel) {
+		window.bridge = channel.objects.bridge;
+		
+		bridge.signalToWeb.connect(function (response) {
+            
+            var map = new AMap.Map("mapContainer", {
+                mapStyle: 'amap://styles/whitesmoke',
+                resizeEnable: true,
+                center: [response[0].position[0], response[0].position[1]],
+                zoom: 6
+            });
+            var truckOptions = {
+                map: map,
+                policy:0,
+                size:1,
+                panel:'panel'
+            };
+            var driving = new AMap.TruckDriving(truckOptions);
+            var path = [];
+            for (var i = 0; i < response.length; i++){
+                path.push({lnglat:[response[i].position[0], response[i].position[1]]});
+                var text = new AMap.Text({
+                    text: response[i].name,
+                    textAlign:'center', 
+                    verticalAlign:'middle',
+                    cursor:'pointer',
+                    offset: new AMap.Pixel(36, 12),
+                    style:{
+                        'background-color':'#DDDDDD',
+                        'font-size':'14px'
+                    },
+                    position: [response[i].position[0], response[i].position[1]]
+                });
+                text.setMap(map);
+            }
+            driving.search(path,function(status, result) {
+                //TODO something
+            });
+
+		});
+
+	});
+    
+    
+</script>
+</body>
+</html>

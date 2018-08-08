@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+	<title>显示摄像头位置</title>
+	<script src="./qwebchannel.js"></script>
+	<link rel="stylesheet" href="https://cache.amap.com/lbs/static/main1119.css"/>
+	<style>
+		.info-tip {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			font-size: 12px;
+			background-color: #fff;
+			height: 35px;
+			text-align: left;
+		}
+	</style>
+	<script src="https://cache.amap.com/lbs/static/es5.min.js"></script>
+	<script src="https://webapi.amap.com/maps?v=1.4.8&key=6b0237d295dd9898cc5ffca0a316df67"></script>
+	<script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
+</head>
+<body>
+<div id="container"></div>
+<div class="button-group">
+	<input id="setFitView" class="button" type="button" value="RESET"/>
+</div>
+<div class="info-tip">
+	<div id="centerCoord"></div>
+	<div id="tips"></div>
+</div>
+<script>
+	new QWebChannel(qt.webChannelTransport, function(channel) {
+		window.bridge = channel.objects.bridge;
+		
+		bridge.signalToWeb.connect(function (response) {
+			
+//			window.alert(response);
+			var map = new AMap.Map('container', {
+				mapStyle: 'amap://styles/macaron',
+				resizeEnable: true,
+				center: [116.397428, 39.90923],
+				zoom: 7
+			});    
+			map.clearMap();
+			AMap.event.addDomListener(document.getElementById('setFitView'), 'click', function() {
+				map.setFitView();
+			});
+			var markers = [];
+			for (var i = 0; i < response.length; i++){
+				markers.push({
+					icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
+					position: [response[i].position[0], response[i].position[1]],
+                    content: response[i].name
+				});
+			}
+			markers.forEach(function(marker) {
+				var m = new AMap.Marker({
+					map: map,
+					icon: marker.icon,
+					position: [marker.position[0], marker.position[1]],
+					offset: new AMap.Pixel(-12, -36)
+                    
+				});
+                m.setLabel({
+                    offset: new AMap.Pixel(20, 20),
+                    style:{
+                        'background-color':'#DDDDDD',
+                        'font-size':'14px'
+                    },
+                    content: marker.content
+                });
+				
+			});
+			map.setFitView();
+
+		});
+
+	});
+</script>
+</body>
+</html>

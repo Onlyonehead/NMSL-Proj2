@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+	<title>显示摄像头位置</title>
+	<script src="./qwebchannel.js"></script>
+	<link rel="stylesheet" href="https://cache.amap.com/lbs/static/main1119.css"/>
+	<style>
+		.info-tip {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			font-size: 12px;
+			background-color: #fff;
+			height: 35px;
+			text-align: left;
+		}
+	</style>
+	<script src="https://cache.amap.com/lbs/static/es5.min.js"></script>
+	<script src="https://webapi.amap.com/maps?v=1.4.8&key=6b0237d295dd9898cc5ffca0a316df67"></script>
+	<script type="text/javascript" src="https://cache.amap.com/lbs/static/addToolbar.js"></script>
+</head>
+<body>
+<div id="container"></div>
+<div class="button-group">
+	<input id="setFitView" class="button" type="button" value="地图自适应显示"/>
+</div>
+<div class="info-tip">
+	<div id="centerCoord"></div>
+	<div id="tips"></div>
+</div>
+<script>
+	new QWebChannel(qt.webChannelTransport, function(channel) {
+		window.bridge = channel.objects.bridge;
+		
+		bridge.signalToWeb.connect(function (response) {
+			
+//			window.alert(response);
+			var map = new AMap.Map('container', {
+				mapStyle: 'amap://styles/macaron',
+				resizeEnable: true,
+				center: [116.397428, 39.90923],
+				zoom: 6
+			});    
+			map.clearMap();
+			var center = map.getCenter();
+			var centerText = '当前中心点坐标：' + center.getLng() + ',' + center.getLat();
+			document.getElementById('centerCoord').innerHTML = centerText;
+			document.getElementById('tips').innerHTML = '成功添加'+response.length+'个点标记，其中有一些在地图视野外！';
+
+			// 添加事件监听, 使地图自适应显示到合适的范围
+			AMap.event.addDomListener(document.getElementById('setFitView'), 'click', function() {
+				var newCenter = map.setFitView();
+				document.getElementById('centerCoord').innerHTML = '当前中心点坐标：' + newCenter.getCenter();
+				document.getElementById('tips').innerHTML = '地图自适应, '+response.length+'个点标记已全部显示在视野中！';
+			});
+			var markers = [];
+			for (var i = 0; i < response.length; i++){
+				markers.push({
+					icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
+					position: [response[i].position[0], response[i].position[1]],
+                    content: response[i].name
+				});
+			}
+			markers.forEach(function(marker) {
+				var m = new AMap.Marker({
+					map: map,
+					icon: marker.icon,
+					position: [marker.position[0], marker.position[1]],
+					offset: new AMap.Pixel(-12, -36)
+                    
+				});
+                m.setLabel({
+                    offset: new AMap.Pixel(20, 20),
+                    style:{
+                        'background-color':'#DDDDDD',
+                        'font-size':'14px'
+                    },
+                    content: marker.content
+                });
+				
+			});
+
+		});
+
+	});
+</script>
+</body>
+</html>
