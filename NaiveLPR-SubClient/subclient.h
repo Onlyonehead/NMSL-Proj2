@@ -111,6 +111,8 @@ private slots:
 
     void on_pushButton_confirm_clicked();
 
+    void finishedSlotForAuto(QNetworkReply* reply);
+
 private:
     Ui::SubClient *ui;
 
@@ -138,6 +140,9 @@ private:
 
     //tool method
     void sendSignalForLogin(QString);
+
+    //for etc
+    QString plate;
 };
 
 #endif // SUBCLIENT_H

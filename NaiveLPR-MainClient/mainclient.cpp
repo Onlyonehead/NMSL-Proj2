@@ -247,6 +247,71 @@ void MainClient::showString(QString s1, QString s2, QString s3, QString s4, QStr
     ui->label_27->setText(QChar(0xf058));
     ui->label_27->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
 
+    ui->label_39->setFont(font);
+    ui->label_39->setText(QChar(0xf2bd));
+    ui->label_39->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_26->setFont(font);
+    ui->label_26->setText(QChar(0xf1b9));
+    ui->label_26->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_44->setFont(font);
+    ui->label_44->setText(QChar(0xf53d));
+    ui->label_44->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_40->setFont(font);
+    ui->label_40->setText(QChar(0xf155));
+    ui->label_40->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+
+    ui->label_49->setFont(font);
+    ui->label_49->setText(QChar(0xf22d));
+    ui->label_49->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_53->setFont(font);
+    ui->label_53->setText(QChar(0xf22d));
+    ui->label_53->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_82->setFont(font);
+    ui->label_82->setText(QChar(0xf22d));
+    ui->label_82->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_83->setFont(font);
+    ui->label_83->setText(QChar(0xf22d));
+    ui->label_83->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_69->setFont(font);
+    ui->label_69->setText(QChar(0xf122));
+    ui->label_69->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_72->setFont(font);
+    ui->label_72->setText(QChar(0xf43c));
+    ui->label_72->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_74->setFont(font);
+    ui->label_74->setText(QChar(0xf138));
+    ui->label_74->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_77->setFont(font);
+    ui->label_77->setText(QChar(0xf138));
+    ui->label_77->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    ui->label_130->setFont(font);
+    ui->label_130->setText(QChar(0xf571));
+    ui->label_130->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    QApplication::processEvents();
+
+    ui->label_131->setFont(font);
+    ui->label_131->setText(QChar(0xf5a0));
+    ui->label_131->setStyleSheet("border: 0px; color: rgb(106, 106, 106);background:none;");
+
+    //network status
+    ui->label_33->setFont(font);
+    ui->label_33->setText(QChar(0xf111));
+    ui->label_33->setStyleSheet("border: 0px; color: rgb(33, 233, 121);background:none;"
+                                "border-image:none;");
+
     ui->icon_search->setFont(icon_search);
     ui->icon_search->setText(QChar(0xf35a));
     ui->icon_search->setStyleSheet("QPushButton{border: 0px; color: rgb(127, 127, 127);} "
@@ -319,6 +384,7 @@ void MainClient::showString(QString s1, QString s2, QString s3, QString s4, QStr
     ui->comboBox_updateStaffPosition->setView(new QListView());
     ui->comboBox_addNewGender->setView(new QListView());
     ui->comboBox_addNewPosition->setView(new QListView());
+    ui->comboBox_selectType_2->setView(new QListView());
 
 
     ui->pushButton_switch->setEnabled(true);
@@ -355,6 +421,32 @@ void MainClient::showString(QString s1, QString s2, QString s3, QString s4, QStr
     ui->tw_videos->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tw_videos->setAlternatingRowColors(true);
 
+    ui->tableWidget_highway->horizontalHeader()->setDefaultSectionSize(10);
+    ui->tableWidget_highway->setColumnWidth(0, 90);
+    ui->tableWidget_highway->setColumnWidth(1, 180);
+    ui->tableWidget_highway->setColumnWidth(2, 180);
+    ui->tableWidget_highway->horizontalHeader()->setStretchLastSection(true);
+    ui->tableWidget_highway->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableWidget_highway->setAlternatingRowColors(true);
+
+    ui->tableWidget_accounts->setColumnWidth(0, 90);
+    ui->tableWidget_accounts->horizontalHeader()->setStretchLastSection(true);
+    ui->tableWidget_accounts->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableWidget_accounts->setAlternatingRowColors(true);
+
+    ui->tableWidget_payment->horizontalHeader()->setDefaultSectionSize(20);
+    ui->tableWidget_payment->setColumnWidth(0, 180);
+    ui->tableWidget_payment->setColumnWidth(1, 20);
+    ui->tableWidget_payment->horizontalHeader()->setStretchLastSection(true);
+    ui->tableWidget_payment->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableWidget_payment->setAlternatingRowColors(true);
+
+
+    ui->tableWidget_toPay->horizontalHeader()->setDefaultSectionSize(180);
+    ui->tableWidget_toPay->verticalHeader()->setDefaultSectionSize(50);
+    ui->tableWidget_toPay->horizontalHeader()->setStretchLastSection(true);
+    ui->tableWidget_toPay->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableWidget_toPay->setAlternatingRowColors(true);
 
     file = new QFile(MODEL_DIR);
     if(file->exists()){
@@ -824,7 +916,8 @@ bool MainClient::eventFilter(QObject *watched, QEvent *event) {
             QDragEnterEvent *dEE = static_cast<QDragEnterEvent*>(event);
 
             if(!dEE->mimeData()->urls()[0].toLocalFile().right(3).compare("mp4",Qt::CaseInsensitive)
-                    ||!dEE->mimeData()->urls()[0].toLocalFile().right(3).compare("avi",Qt::CaseInsensitive))
+                    ||!dEE->mimeData()->urls()[0].toLocalFile().right(3).compare("avi",Qt::CaseInsensitive)
+                ||!dEE->mimeData()->urls()[0].toLocalFile().right(3).compare("mov",Qt::CaseInsensitive))
             {
                 dEE->acceptProposedAction();//接受鼠标拖入事件
             }
@@ -871,7 +964,6 @@ bool MainClient::eventFilter(QObject *watched, QEvent *event) {
             QFile file(filename);
             if(!file.open(QIODevice::ReadOnly))
             {
-                QMessageBox::information(NULL, "Title", "Content", QMessageBox::Ok, QMessageBox::Ok);
                 return true;
             }
             if(if_reload)
@@ -923,3 +1015,4 @@ bool MainClient::eventFilter(QObject *watched, QEvent *event) {
     }
     return QWidget::eventFilter(watched, event);
 }
+

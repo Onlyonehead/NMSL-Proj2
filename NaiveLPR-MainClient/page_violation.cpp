@@ -128,6 +128,8 @@ void MainClient::on_tw_videos_cellClicked(int row, int column)
         ui->label_width->setText(QString::number(video_width));
         ui->label_height->setText(QString::number(video_height));
 
+        ui->label_selectArea->setText(QString::number(video_width * video_height));
+
         VideoCapture capture(localPath.toStdString());
 
         long totalFrameNumber = capture.get(CV_CAP_PROP_FRAME_COUNT);
@@ -385,7 +387,7 @@ void MainClient::on_pb_sendRequest_clicked()
     QFile file(vName);
     if(!file.open(QIODevice::ReadOnly))
     {
-        QMessageBox::information(NULL, "Title", "Content", QMessageBox::Ok, QMessageBox::Ok);
+        QMessageBox::warning(this, "警告", "生成失败", QMessageBox::Close);
         return;
     }
     if(if_reload)
@@ -411,14 +413,13 @@ void MainClient::on_pb_sendRequest_clicked()
     //设置播放器
     player->setMedia(QMediaContent(QUrl::fromLocalFile(vName)));
 
-
-
     //play_state为true表示播放，false表示暂停
     play_state = true;
     //启用播放/暂停按钮，并将其文本设置为“暂停”
     ui->pb_play_3->setEnabled(true);
     ui->pb_play_3->setText("pause");
     //播放器开启
+
     player->play();
 
     //启用进度条
@@ -430,6 +431,7 @@ void MainClient::on_pb_sendRequest_clicked()
     timer->start();
     //将timer连接至onTimerOut槽函数
     connect(timer, SIGNAL(timeout()), this, SLOT(onTimerOut()));
+
 }
 
 

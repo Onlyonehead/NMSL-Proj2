@@ -215,6 +215,30 @@ private slots:
 
     void on_horizontalSlider_down_valueChanged(int value);
 
+    void on_pushButton_etcDisplay_clicked();
+
+    void on_pushButton_etcClear_clicked();
+
+    void on_comboBox_selectType_2_currentTextChanged(const QString &arg1);
+
+    void on_tableWidget_accounts_itemClicked(QTableWidgetItem *item);
+
+    void on_tableWidget_toPay_itemClicked(QTableWidgetItem *item);
+
+    void on_pushButton_charge_clicked();
+
+    void on_pushButton_sms_clicked();
+
+    void finishedSlot(QNetworkReply*);
+
+    void on_pushButton_etcCharge_clicked();
+
+    void on_tableWidget_highway_itemClicked(QTableWidgetItem *item);
+
+    void on_pushButton_generate_2_clicked();
+
+    void on_pushButton_showRoute_clicked();
+
 signals:
     void stringReturn(QString);
 
@@ -288,6 +312,11 @@ private:
     int video_width, video_height;
     bool if_index=false;
     qint64 duration;//视频时长
+
+    // for page_etc
+    QVector<QStringList> etcHighway;
+    QVector<QStringList> etcAccount;
+    QVector<QStringList> etcPayment;
 };
 
 #endif // MAINCLIENT_H

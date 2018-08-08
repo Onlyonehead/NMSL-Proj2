@@ -88,8 +88,8 @@ void Processor::work ()
         QSqlQuery query;
         SQLTool::search(query, "plates");
 
-        int count0;
-        int count1;
+        int count0 = 0;
+        int count1 = 0;
 
         while(query.next()){
             QStringList l;
@@ -197,39 +197,51 @@ void Processor::work ()
 
             Mat result = PlateRecognition::process(midImage);
 
-            imwrite((DIR + QString("/plates-r/") + plateRName).toStdString(), result);
-            vector<Mat> chars = CharSegment::process(midImage, result);
-            string plate = "";
-            double rate = 0;
-
-            for(int j = 0; j < 7; ++j){
-                imwrite((DIR + QString("/chars/") + charName.at(j)).toStdString(), chars.at(j));
-                if(j == 0){
-                    vector<string> r = CharRecognition::process_ch(chars.at(j), dir);
-                    plate += r.at(0);
-                    rate += stod(r.at(1)) / 7;
-                }else if(j == 1){
-                    vector<string> r = CharRecognition::process_sp(chars.at(j), dir);
-                    plate += r.at(0);
-                    rate += stod(r.at(1)) / 7;
+            if(result.rows < 2 || result.cols < 2){
+                out << function;
+                out << QString("FAIL");
+            }else{
+                imwrite((DIR + QString("/plates-r/") + plateRName).toStdString(), result);
+                vector<Mat> chars = CharSegment::process(midImage, result);
+                if(chars.size() != 7){
+                    out << function;
+                    out << QString("FAIL");
                 }else{
-                    vector<string> r = CharRecognition::process(chars.at(j), dir);
-                    plate += r.at(0);
-                    rate += stod(r.at(1)) / 7;
+                    string plate = "";
+                    double rate = 0;
+
+                    for(int j = 0; j < 7; ++j){
+                        imwrite((DIR + QString("/chars/") + charName.at(j)).toStdString(), chars.at(j));
+                        if(j == 0){
+                            vector<string> r = CharRecognition::process_ch(chars.at(j), dir);
+                            plate += r.at(0);
+                            rate += stod(r.at(1)) / 7;
+                        }else if(j == 1){
+                            vector<string> r = CharRecognition::process_sp(chars.at(j), dir);
+                            plate += r.at(0);
+                            rate += stod(r.at(1)) / 7;
+                        }else{
+                            vector<string> r = CharRecognition::process(chars.at(j), dir);
+                            plate += r.at(0);
+                            rate += stod(r.at(1)) / 7;
+                        }
+                    }
+
+                    QStringList list;
+                    list.append(filename.split(".").at(0));
+                    list.append(QString::fromStdString(plate));
+                    list.append(QString::number(rate));
+                    list.append("USER");
+                    SQLTool::insert("plates", list);
+
+                    out << function;
+                    out << plateName;
+                    out << QString::fromStdString(plate);
+                    out << rate;
                 }
             }
 
-            QStringList list;
-            list.append(filename.split(".").at(0));
-            list.append(QString::fromStdString(plate));
-            list.append(QString::number(rate));
-            list.append("USER");
-            SQLTool::insert("plates", list);
 
-            out << function;
-            out << plateName;
-            out << QString::fromStdString(plate);
-            out << rate;
         }
     }
 
@@ -649,6 +661,30 @@ void Processor::work ()
                 SQLTool::update("ETCHighway", "destination", position, ll);
                 SQLTool::update("ETCHighway", "destination_time", time, ll);
                 SQLTool::update("ETCHighway", "complete", "1", ll);
+
+
+                QSqlQuery query2;
+                QString car_type;
+
+                SQLTool::search(query2, "ETCAccounts", "plate", QString::fromStdString(plate));
+                if(query2.next()){
+                    car_type = query2.value(3).toString();
+                }
+                qDebug() << car_type;
+
+                out << function;
+                out << QString("Cost");
+                out << QString::fromStdString(plate);
+                out << car_type;
+                out << query.value(1).toString();
+                out << position;
+
+                out.device()->seek(0);
+                out << (quint16) (message.size() - sizeof(quint16));
+                m_socket->write(message);
+                m_socket->flush();
+                return ;
+
             }else{
                 QStringList list;
                 list.append(QString::fromStdString(plate));
@@ -666,6 +702,160 @@ void Processor::work ()
         out << QString("Done");
 
 
+    }
+
+    if(function == "etcDisplay"){
+        QSqlQuery query;
+
+        QVector<QStringList> hlist;
+        QVector<QStringList> alist;
+        QVector<QStringList> plist;
+
+        SQLTool::search(query, "ETCHighway");
+        while(query.next()){
+            QStringList l;
+            l.append(query.value(0).toString());
+            l.append(query.value(1).toString());
+            l.append(query.value(2).toString());
+            l.append(query.value(3).toString());
+            l.append(query.value(4).toString());
+            l.append(query.value(5).toString());
+            l.append(query.value(6).toString());
+            hlist.append(l);
+        }
+
+        SQLTool::search(query, "ETCAccounts");
+        while(query.next()){
+            QStringList l;
+            l.append(query.value(0).toString());
+            l.append(query.value(1).toString());
+            l.append(query.value(2).toString());
+            l.append(query.value(3).toString());
+            l.append(query.value(4).toString());
+            alist.append(l);
+        }
+
+        SQLTool::search(query, "ETCPayment");
+        while(query.next()){
+            QStringList l;
+            l.append(query.value(0).toString());
+            l.append(query.value(1).toString());
+            l.append(query.value(2).toString());
+            l.append(query.value(3).toString());
+            l.append(query.value(4).toString());
+            plist.append(l);
+        }
+
+        out << function;
+        out << hlist;
+        out << alist;
+        out << plist;
+    }
+
+    if(function == "setCost"){
+        QSqlQuery query;
+
+        QString plate = list.at(0);
+        QString toll = list.at(1);
+        QString toll_distance = list.at(2);
+
+        QDateTime current_date_time = QDateTime::currentDateTime();
+        QString time = current_date_time.toString("yyyy-MM-dd hh:mm:ss");
+
+        QStringList list;
+        list.append(plate);
+        list.append(time);
+        list.append(toll);
+        list.append(toll_distance);
+        list.append("0");
+        SQLTool::insert("ETCPayment", list);
+
+    }
+
+    if(function == "charge"){
+        QString plate = list.at(0);
+        QString datetime = list.at(1);
+
+        QStringList ll;
+        ll.append("plate");
+        ll.append(plate);
+        ll.append("date");
+        ll.append(datetime);
+        SQLTool::update("ETCPayment", "complete", "1", ll);
+
+        out << function;
+        out << QString("Done");
+    }
+
+    if(function == "AutoCharge"){
+        QString isChecked = list.at(0);
+
+        QSqlQuery query;
+
+        QStringList tels;
+
+        QMap<QString, int> account;
+
+        QMap<QString, QString> phoneNumber;
+
+        SQLTool::search(query, "ETCAccounts");
+
+        while(query.next()){
+            account.insert(query.value(0).toString(), query.value(4).toInt());
+            phoneNumber.insert(query.value(0).toString(), query.value(2).toString());
+        }
+
+        int count = 0;
+
+        SQLTool::search(query, "ETCPayment");
+        while(query.next()){
+            QString plate = query.value(0).toString();
+            if(query.value(4).toString() == "0" &&
+                    account.contains((plate))){
+                if(query.value(2).toInt() <= account.value(plate)){
+                    QStringList ll;
+                    ll.append("plate");
+                    ll.append(plate);
+                    ll.append("date");
+                    ll.append(query.value(1).toString());
+                    SQLTool::update("ETCPayment", "complete", "1", ll);
+
+                    SQLTool::update("ETCAccounts", "balance",
+                                    QString::number(account.value(plate) -
+                                                    query.value(2).toInt()), "plate", plate);
+
+                    tels.append(phoneNumber.value(plate));
+
+                    count++;
+                }
+            }
+        }
+
+        out << function;
+        out << QString("Done");
+        out << count;
+        out << tels;
+        out << isChecked;
+    }
+
+    if(function == "recharge"){
+        QString plate = list.at(0);
+
+        int recharge = list.at(1).toInt();
+
+        QSqlQuery query;
+
+        SQLTool::search(query, "ETCAccounts", "plate", plate);
+
+        if(query.next()){
+            recharge += query.value(4).toInt();
+        }
+
+        SQLTool::update("ETCAccounts", "balance",
+                        QString::number(recharge), "plate", plate);
+
+        out << function;
+        out << QString("Done");
     }
 
     out.device()->seek(0);

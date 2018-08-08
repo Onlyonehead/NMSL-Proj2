@@ -291,12 +291,119 @@ void SubClient::readMessage()
     }
 
     if(from == "ETC"){
+
         QString msg;
         in >> msg;
         if(msg == "Done"){
             QMessageBox::information(this,"提示", "\n上传成功！",QMessageBox::Ok);
             on_pushButton_clear_clicked();
+        }else{
+
+
+
+            QString position_from;
+            QString position_to;
+
+            QString car_type;
+
+            in >> this->plate;
+            in >> car_type;
+            in >> position_from;
+            in >> position_to;
+
+            QNetworkAccessManager *m_accessManager = new QNetworkAccessManager(this);
+            QObject::connect(m_accessManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(finishedSlotForAuto(QNetworkReply*)));
+            QUrl url;
+            QNetworkRequest request;
+
+            qDebug() << car_type;
+            if(car_type == "car"){
+                url = QUrl("https://restapi.amap.com/v3/direction/driving?origin="
+                            + position_from +
+                            "&destination="
+                            + position_to +
+                            "&key=be6f38b0c3801dd73bcba0e07165b068"
+                            "&extensions=base");
+            }else{
+//                url = QUrl("https://restapi.amap.com/v4/direction/truck?origin="
+//                            + position_from +
+//                            "&destination="
+//                            + position_to +
+//                            "&key=be6f38b0c3801dd73bcba0e07165b068"
+//                            "&size=2"
+//                            "&extensions=base");
+
+                url = QUrl("https://restapi.amap.com/v3/direction/driving?origin="
+                            + position_from +
+                            "&destination="
+                            + position_to +
+                            "&key=be6f38b0c3801dd73bcba0e07165b068"
+                            "&extensions=base");
+            }
+
+
+            qDebug() << url;
+
+
+            request.setUrl(url);
+            m_accessManager->get(request);
+
+            QMessageBox::information(this,"提示", "\n上传成功！",QMessageBox::Ok);
+            on_pushButton_clear_clicked();
+
         }
     }
 
+}
+
+void SubClient::finishedSlotForAuto(QNetworkReply* reply){
+
+    bool flag = false;
+    if (reply->error() == QNetworkReply::NoError){
+        QByteArray ba = reply->readAll();
+            QJsonParseError jsonpe;
+            QJsonDocument json = QJsonDocument::fromJson(ba, &jsonpe);
+            if (jsonpe.error == QJsonParseError::NoError){
+                if (json.isObject()){
+                    QJsonObject obj = json.object();
+                    if (obj.contains("error")){
+                        qDebug() << "error:" << obj["error"];
+                    }else{
+                        QJsonObject o = obj.value("route").toObject();
+
+                        QString origin = o.value("origin").toString();
+                        QString destination = o.value("destination").toString();
+
+                        QJsonArray jarray = o.value("paths").toArray();
+
+
+
+                        QString tolls = jarray[0].toObject().value("tolls").toString();
+
+                        QString toll_distance = jarray[0].toObject().value("toll_distance").toString();
+
+
+
+                        QStringList msg;
+                        msg.append("setCost");
+                        msg.append(this->plate);
+                        msg.append(tolls);
+                        msg.append(toll_distance);
+                        sendMessage(msg);
+
+                        flag = true;
+                    }
+                }else{
+                    qDebug() << "error, should be json object";
+                }
+            }else{
+                qDebug() << "error:" << jsonpe.errorString();
+            }
+    }else{
+        qDebug() << "error:" << reply->errorString();
+    }
+    if(!flag){
+        QMessageBox::warning(this," 警告", "\n计算失败",QMessageBox::Close);
+        return ;
+    }
 }

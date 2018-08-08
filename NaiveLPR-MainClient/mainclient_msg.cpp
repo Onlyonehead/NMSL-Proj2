@@ -56,7 +56,7 @@ void MainClient::readMessage()
         this->cameras = c;
 
         QPieSeries *series3 = new QPieSeries();
-        series3->setHoleSize(0.45);
+        series3->setHoleSize(0.35);
         series3->append("User", count0);
         series3->append("Camera", count1);
 
@@ -299,10 +299,130 @@ void MainClient::readMessage()
         for(QString s : set){
             ui->tableWidget_search->insertRow(count);
             ui->tableWidget_search->setItem(count, 0, new QTableWidgetItem(s));
+            ui->tableWidget_search->item(count, 0)->setTextAlignment(Qt::AlignCenter);
             count++;
         }
         ui->tableWidget_search->setRowCount(count);
 
+    }
+
+    if(from == "etcDisplay"){
+        on_pushButton_etcClear_clicked();
+        QVector<QStringList> hlist;
+        in >> hlist;
+        QVector<QStringList> alist;
+        in >> alist;
+        QVector<QStringList> plist;
+        in >> plist;
+        this->etcHighway = hlist;
+        this->etcAccount = alist;
+        this->etcPayment = plist;
+
+        int count_ongoing = 0;
+        int count_topay = 0;
+
+        int count = 0;
+        ui->tableWidget_highway->setRowCount(0);
+        for(QStringList l : hlist){
+            QApplication::processEvents();
+            ui->tableWidget_highway->insertRow(count);
+            ui->tableWidget_highway->setItem(count, 0, new QTableWidgetItem(l.at(0)));
+            QStringList s = l.at(2).split(QRegExp("[A-Z]"));
+            ui->tableWidget_highway->setItem(count, 1, new QTableWidgetItem(s.at(0) + " " + s.at(1)));
+            if(l.at(6).trimmed() == ""){
+                ui->tableWidget_highway->setItem(count, 2, new QTableWidgetItem(QString("-")));
+                ui->tableWidget_highway->item(count, 2)->setTextAlignment(Qt::AlignCenter);
+
+                count_ongoing++;
+
+            }else{
+                s = l.at(6).split(QRegExp("[A-Z]"));
+                ui->tableWidget_highway->setItem(count, 2, new QTableWidgetItem(s.at(0) + " " + s.at(1)));
+            }
+            ui->tableWidget_highway->setItem(count, 3, new QTableWidgetItem(l.at(3)));
+            QApplication::processEvents();
+            count++;
+        }
+        ui->tableWidget_highway->setRowCount(count);
+
+        count = 0;
+        ui->tableWidget_accounts->setRowCount(0);
+        for(QStringList l : alist){
+            QApplication::processEvents();
+            ui->tableWidget_accounts->insertRow(count);
+            ui->tableWidget_accounts->setItem(count, 0, new QTableWidgetItem(l.at(0)));
+            ui->tableWidget_accounts->item(count, 0)->setTextAlignment(Qt::AlignCenter);
+            QApplication::processEvents();
+            count++;
+        }
+        ui->tableWidget_accounts->setRowCount(count);
+
+
+        count = 0;
+        ui->tableWidget_toPay->setRowCount(0);
+        for(QStringList l : plist){
+            QApplication::processEvents();
+            if(l.at(4) == "0"){
+                ui->tableWidget_toPay->insertRow(count);
+                QStringList s = l.at(1).split(QRegExp("[A-Z]"));
+                ui->tableWidget_toPay->setItem(count, 0, new QTableWidgetItem(l.at(0) + "\n" +
+                                                                              s.at(0) + " " + s.at(1)));
+                ui->tableWidget_toPay->item(count, 0)->setTextAlignment(Qt::AlignCenter);
+                QApplication::processEvents();
+
+                count_topay++;
+
+                count++;
+            }
+        }
+        ui->tableWidget_toPay->setRowCount(count);
+
+        ui->label_quantityToPay->setText(QString::number(count_topay));
+        ui->label_quantityOngoing->setText(QString::number(count_ongoing));
+
+        progressBar();
+    }
+
+    if(from == "charge"){
+        QString msg;
+        in >> msg;
+        if(msg == "Done"){
+            QMessageBox::information(this,"提示", "\n收费成功！",QMessageBox::Ok);
+        }
+    }
+
+    if(from == "AutoCharge"){
+        QString msg;
+        int count;
+        QStringList tels;
+        QString isChecked;
+
+        in >> msg;
+        in >> count;
+        in >> tels;
+        in >> isChecked;
+
+        if(msg == "Done"){
+            QMessageBox::information(this,"提示", "\n自动收费成功!\n共收费: " +
+                                     QString::number(count) + " 辆车!", QMessageBox::Ok);
+            qDebug() << tels;
+            qDebug() << isChecked;
+
+            if(isChecked == "1"){
+
+            }
+
+            on_pushButton_etcDisplay_clicked();
+        }
+    }
+
+    if(from == "recharge"){
+        QString msg;
+        in >> msg;
+        if(msg == "Done"){
+            QMessageBox::information(this,"提示", "\n充值成功！",QMessageBox::Ok);
+            on_pushButton_etcDisplay_clicked();
+        }
     }
 
 }
