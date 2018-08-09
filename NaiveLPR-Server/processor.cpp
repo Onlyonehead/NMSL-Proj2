@@ -793,6 +793,7 @@ void Processor::work ()
         QSqlQuery query;
 
         QStringList tels;
+        QVector<int> costs;
 
         QMap<QString, int> account;
 
@@ -825,6 +826,7 @@ void Processor::work ()
                                                     query.value(2).toInt()), "plate", plate);
 
                     tels.append(phoneNumber.value(plate));
+                    costs.append(query.value(2).toInt());
 
                     count++;
                 }
@@ -835,6 +837,7 @@ void Processor::work ()
         out << QString("Done");
         out << count;
         out << tels;
+        out << costs;
         out << isChecked;
     }
 

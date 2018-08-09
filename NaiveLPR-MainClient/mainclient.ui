@@ -10194,7 +10194,7 @@ SIGNED</string>
     <widget class="QLabel" name="label_33">
      <property name="geometry">
       <rect>
-       <x>1060</x>
+       <x>1050</x>
        <y>14</y>
        <width>18</width>
        <height>16</height>
@@ -10217,12 +10217,12 @@ SIGNED</string>
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QLabel" name="label_38">
+    <widget class="QLabel" name="label_status">
      <property name="geometry">
       <rect>
-       <x>1058</x>
+       <x>1048</x>
        <y>11</y>
-       <width>71</width>
+       <width>80</width>
        <height>21</height>
       </rect>
      </property>
@@ -10237,7 +10237,7 @@ SIGNED</string>
      </property>
      <property name="styleSheet">
       <string notr="true">QLabel{
-	background-color: rgb(252, 252, 252);
+	background-color: rgba(252, 252, 252,240);
 	border-image:none;
 	border: 0px;
 	color:rgb(76, 76, 76);
@@ -10245,13 +10245,13 @@ SIGNED</string>
 }</string>
      </property>
      <property name="text">
-      <string>GOOD  </string>
+      <string>GOOD   </string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <zorder>label_38</zorder>
+    <zorder>label_status</zorder>
     <zorder>frame_2</zorder>
     <zorder>horizontalLayoutWidget</zorder>
     <zorder>progressBar</zorder>

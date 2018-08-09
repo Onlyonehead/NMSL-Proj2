@@ -11,6 +11,8 @@ MainClient::MainClient(QWidget *parent) :
     m_tcpsocket->connectToHost(QHostAddress::LocalHost,8848);//设置客户端的端口号
     connect(m_tcpsocket,SIGNAL(readyRead()),
             this,SLOT(readMessage()));//用于接受数据
+    connect(m_tcpsocket,SIGNAL(disconnected()),
+            this,SLOT(disconnected_method()));
 
     m_socket = new QTcpSocket;
     m_socket->connectToHost(QHostAddress::LocalHost, 7777);
@@ -37,6 +39,12 @@ MainClient::MainClient(QWidget *parent) :
 
 //    ui->textEdit->append(str);
 
+}
+
+void MainClient::disconnected_method(){
+    ui->label_33->setStyleSheet("border: 0px; color: red;background:none;"
+                                "border-image:none;");
+    ui->label_status->setText("WRONG  ");
 }
 
 MainClient::~MainClient()

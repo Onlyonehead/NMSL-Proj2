@@ -239,6 +239,10 @@ private slots:
 
     void on_pushButton_showRoute_clicked();
 
+    void disconnected_method();
+
+    void finishedSlot2(QNetworkReply* reply);
+
 signals:
     void stringReturn(QString);
 
@@ -317,6 +321,9 @@ private:
     QVector<QStringList> etcHighway;
     QVector<QStringList> etcAccount;
     QVector<QStringList> etcPayment;
+
+    int success_count;
+    int tel_count;
 };
 
 #endif // MAINCLIENT_H

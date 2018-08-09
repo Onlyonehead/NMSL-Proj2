@@ -277,8 +277,8 @@ void MainClient::on_pushButton_sms_clicked()
     QJsonObject json;
     QJsonDocument docum;
     QByteArray data_json;
-    json.insert("msg", "您本次高速公路的花费为: " + ui->label_toll->text() +
-                "，如果未缴费，请及时缴费。");
+    json.insert("msg", "您本次高速公路的花费为: " + ui->label_toll->text().split(" ")[0] +
+                " 元，如果未缴费，请及时缴费。");
     json.insert("sig", sig);
     json_in.insert("mobile", ui->label_tel->text());
     json_in.insert("nationcode", "86");
@@ -310,6 +310,17 @@ void MainClient::finishedSlot(QNetworkReply* reply)
         QMessageBox::information(this,"提示", "\n短信发送成功！",QMessageBox::Ok);
     }else{
         QMessageBox::warning(this,"警告", "\n短信发送失败！",QMessageBox::Close);
+    }
+}
+
+void MainClient::finishedSlot2(QNetworkReply* reply)
+{
+    if(reply->error() == QNetworkReply::NoError){
+        this->success_count++;
+    }
+
+    if(this->success_count == this->tel_count){
+        QMessageBox::information(this,"提示", "\n短信发送成功！",QMessageBox::Ok);
     }
 }
 

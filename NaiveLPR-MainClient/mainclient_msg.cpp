@@ -11,7 +11,17 @@ void MainClient::sendMessage(QStringList list)
         connect(m_tcpsocket,SIGNAL(readyRead()),
                 this,SLOT(readMessage()));//用于接受数据
         m_tcpsocket->waitForConnected();
+
     }
+
+    if(!(m_tcpsocket->state() == QAbstractSocket::ConnectedState)){
+        QMessageBox::warning(this,"警告", "\n无法连接到服务器！",QMessageBox::Close);
+        return ;
+    }
+
+    ui->label_33->setStyleSheet("border: 0px; color: rgb(33, 233, 121);background:none;"
+                                "border-image:none;");
+    ui->label_status->setText("GOOD   ");
 
     QByteArray message;
     QDataStream out(&message,QIODevice::WriteOnly);
@@ -395,21 +405,72 @@ void MainClient::readMessage()
         QString msg;
         int count;
         QStringList tels;
+        QVector<int> costs;
         QString isChecked;
+
 
         in >> msg;
         in >> count;
         in >> tels;
+        in >> costs;
         in >> isChecked;
+
+        this->tel_count = tels.size();
+
+        QNetworkAccessManager *m_accessManager;
+        m_accessManager= new QNetworkAccessManager(this);
+
+        QObject::connect(m_accessManager, SIGNAL(finished(QNetworkReply*)),
+                         this, SLOT(finishedSlot2(QNetworkReply*)));
 
         if(msg == "Done"){
             QMessageBox::information(this,"提示", "\n自动收费成功!\n共收费: " +
                                      QString::number(count) + " 辆车!", QMessageBox::Ok);
-            qDebug() << tels;
-            qDebug() << isChecked;
 
             if(isChecked == "1"){
+                for(int i = 0; i < tels.size(); i++){
+                    qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
+                    int random = 111111 + qrand() % (999999 - 111111);
 
+                    QDateTime time = QDateTime::currentDateTime();   //获取当前时间
+                    int timestrap = time.toTime_t();   //将当前时间转为时间戳
+
+                    QByteArray byte_array;
+                    byte_array.append("appkey=35a4af1e1aba05887576d1515153d5f4&random="
+                                      + QString::number(random) +
+                                      "&time="
+                                      + QString::number(timestrap) +
+                                      "&mobile="
+                                      + tels.at(i));
+                    QByteArray hash_byte_array = QCryptographicHash::hash(byte_array, QCryptographicHash::Sha256);
+                    QString sig = hash_byte_array.toHex();
+
+                    QJsonObject json_in;
+                    QJsonObject json;
+                    QJsonDocument docum;
+                    QByteArray data_json;
+                    json.insert("msg", "您本次高速公路的花费为: " + QString::number(costs.at(i)) +
+                                " 元，如果未缴费，请及时缴费。");
+                    json.insert("sig", sig);
+                    json_in.insert("mobile", tels.at(i));
+                    json_in.insert("nationcode", "86");
+                    json.insert("tel",json_in);
+                    json.insert("time", timestrap);
+                    json.insert("type", 0);
+
+
+                    docum.setObject(json);
+                    data_json=docum.toJson(QJsonDocument::Compact);
+
+                    QString addr = "https://yun.tim.qq.com/v5/tlssmssvr/sendsms?"
+                                   "sdkappid=1400118824&"
+                                   "random=" + QString::number(random);
+                    QUrl url(addr);
+                    QNetworkRequest request(url);
+                    request.setHeader(QNetworkRequest::ContentTypeHeader,QVariant("application/json"));
+
+                    m_accessManager->post(request,data_json);
+                }
             }
 
             on_pushButton_etcDisplay_clicked();
