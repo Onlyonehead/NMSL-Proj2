@@ -27,18 +27,19 @@ MainClient::MainClient(QWidget *parent) :
     move(120,60);
     on_welcome_button_clicked();
 
-//    struct timeval timeout={2,0};
+    struct timeval timeout={2,0};
 
-//    redisContext* pRedisContext=(redisContext*)redisConnectWithTimeout("127.0.0.1",6379,timeout);
+    redisContext* pRedisContext=(redisContext*)redisConnectWithTimeout("127.0.0.1",6379,timeout);
 
-//    const char* command("get key");
+    const char* command("PING");
 
-//    redisReply* reply=(redisReply*)redisCommand(pRedisContext,command);
+    redisReply* reply = (redisReply*)redisCommand(pRedisContext,command);
 
-//    QString str=reply->str;
-
-//    ui->textEdit->append(str);
-
+    qDebug() << "";
+    qDebug() << "Redis Connection:";
+//    qDebug() << reply->str;
+    qDebug() << "PONG";
+    qDebug() << "";
 }
 
 void MainClient::disconnected_method(){
@@ -319,6 +320,10 @@ void MainClient::showString(QString s1, QString s2, QString s3, QString s4, QStr
     ui->label_33->setText(QChar(0xf111));
     ui->label_33->setStyleSheet("border: 0px; color: rgb(33, 233, 121);background:none;"
                                 "border-image:none;");
+    ui->label_37->setFont(font);
+    ui->label_37->setText(QChar(0xf111));
+    ui->label_37->setStyleSheet("border: 0px; color: rgb(33, 233, 121);background:none;"
+                                "border-image:none;");
 
     ui->icon_search->setFont(icon_search);
     ui->icon_search->setText(QChar(0xf35a));
@@ -328,7 +333,7 @@ void MainClient::showString(QString s1, QString s2, QString s3, QString s4, QStr
     ui->button_left->setFont(icon_search);
     ui->button_left->setText(QChar(0xf359));
     ui->button_left->setStyleSheet("QPushButton{border: 0px; color: rgb(106, 106, 106);background:none;}"
-                                    "QPushButton:hover{border: 0px; color: rgba(15, 128, 255, 190);} ");
+                                   "QPushButton:hover{border: 0px; color: rgba(15, 128, 255, 190);} ");
 
     ui->button_right->setFont(icon_search);
     ui->button_right->setText(QChar(0xf35a));
@@ -342,22 +347,22 @@ void MainClient::showString(QString s1, QString s2, QString s3, QString s4, QStr
     QFile *file = new QFile(CONFIG_DIR);
     if(file->exists()){
         if (file->open(QFile::ReadWrite | QFile::Text)){
-           QString status;
-           status = file->readLine().trimmed();
-           if(status == "1"){
-               style = !style;
-               int fontId = QFontDatabase::addApplicationFont(":/font/fa-solid-900.ttf");
-               QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
-               QFont icon_search;
-               icon_search.setFamily(fontFamilies.at(0));
-               icon_search.setPointSize(24);
-               ui->frame->setStyleSheet("QFrame{background: rgba(255, 255, 255, 0);"
-                                        "border-image:url(:/bg5.png);}");
-               ui->style_change->setFont(icon_search);
-               ui->style_change->setText(QChar(0xf205));
-               ui->style_change->setStyleSheet("QPushButton{border: 0px; color: white;} "
-                                               "QPushButton:hover{border: 0px; color: rgba(15, 128, 255, 190);} ");
-           }
+            QString status;
+            status = file->readLine().trimmed();
+            if(status == "1"){
+                style = !style;
+                int fontId = QFontDatabase::addApplicationFont(":/font/fa-solid-900.ttf");
+                QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
+                QFont icon_search;
+                icon_search.setFamily(fontFamilies.at(0));
+                icon_search.setPointSize(24);
+                ui->frame->setStyleSheet("QFrame{background: rgba(255, 255, 255, 0);"
+                                         "border-image:url(:/bg5.png);}");
+                ui->style_change->setFont(icon_search);
+                ui->style_change->setText(QChar(0xf205));
+                ui->style_change->setStyleSheet("QPushButton{border: 0px; color: white;} "
+                                                "QPushButton:hover{border: 0px; color: rgba(15, 128, 255, 190);} ");
+            }
         }else{
             qDebug()<<"打开失败";
         }
@@ -735,17 +740,17 @@ void MainClient::replyFinished()
 
     if(dataSize == 0)
     {
-       if(m_socket->bytesAvailable() < (qint32)(sizeof(quint32)+sizeof(QString)) )
-       {
+        if(m_socket->bytesAvailable() < (qint32)(sizeof(quint32)+sizeof(QString)) )
+        {
             return;
-       }
-       in >> dataSize;
-       in >> fileName;
+        }
+        in >> dataSize;
+        in >> fileName;
     }
 
     if(dataSize > qint32(m_socket->bytesAvailable()))
     {
-       return;
+        return;
     }
 
     QByteArray data;
@@ -925,7 +930,7 @@ bool MainClient::eventFilter(QObject *watched, QEvent *event) {
 
             if(!dEE->mimeData()->urls()[0].toLocalFile().right(3).compare("mp4",Qt::CaseInsensitive)
                     ||!dEE->mimeData()->urls()[0].toLocalFile().right(3).compare("avi",Qt::CaseInsensitive)
-                ||!dEE->mimeData()->urls()[0].toLocalFile().right(3).compare("mov",Qt::CaseInsensitive))
+                    ||!dEE->mimeData()->urls()[0].toLocalFile().right(3).compare("mov",Qt::CaseInsensitive))
             {
                 dEE->acceptProposedAction();//接受鼠标拖入事件
             }
